@@ -18,7 +18,6 @@ import java.util.HashMap;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashScreenActivity extends AppCompatActivity {
-
     SessionManager sessionManager;
     private static final long SPLASH_SCREEN_DELAY = 3000;
 
@@ -32,7 +31,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         HashMap<String, String> userDetail = sessionManager.getUserDetail();
         String role = userDetail.get(SessionManager.ROLE);
 
-        // Lanjutkan dengan logic Anda
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

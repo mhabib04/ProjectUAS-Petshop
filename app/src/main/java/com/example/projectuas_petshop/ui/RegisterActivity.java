@@ -25,7 +25,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-
     private ActivityRegisterBinding binding;
     String usernameRegister, passwordRegister, nameRegister;
     ApiInterface apiInterface;
@@ -33,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -42,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
             passwordRegister = binding.etPasswordRegister.getText().toString().trim();
             nameRegister = binding.etNameRegister.getText().toString().trim();
             if(usernameRegister.isEmpty() || nameRegister.isEmpty() || passwordRegister.isEmpty()){
-                Toast.makeText(RegisterActivity.this, "Please fill in all fields completely", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_in_all_field_completely), Toast.LENGTH_SHORT).show();
             } else {
                 register(usernameRegister, passwordRegister, nameRegister);
             }
@@ -62,12 +60,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<Register> call, @NonNull Response<Register> response) {
                 if(response.body() != null && response.isSuccessful() && response.body().isStatus()){
-                    Toast.makeText(RegisterActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    String message = response.body().getMessage();
+                    Toast.makeText(RegisterActivity.this, getString(R.string.account) + " " + message + " " + getString(R.string.successfully), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(RegisterActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    String message = response.body().getMessage();
+                    Toast.makeText(RegisterActivity.this, getString(R.string.account) + " " + message + " " + getString(R.string.is_already_in_use), Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -13,11 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectUASPetshop"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.admin.DaftarActivity"
-            android:exported="false"
-            android:theme="@style/Theme.ProjectUASPetshop" />
+            android:name=".ui.admin.AddAnimalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.ListAnimalAdminActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.admin.AdminActivity"
             android:exported="false" />

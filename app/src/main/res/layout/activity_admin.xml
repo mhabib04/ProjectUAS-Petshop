@@ -15,47 +15,27 @@
         android:text="Admin"
         android:textSize="50sp"/>
 
-    <GridLayout
-        android:background="@drawable/custom_edittext"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btnHewan"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:rowCount="2"
-        android:layout_margin="15dp"
-        android:padding="10dp"
-        android:alignmentMode="alignBounds"
-        android:useDefaultMargins="true">
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:text="Hewan"/>
 
-        <Button
-            android:id="@+id/daftarKucing"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:textStyle="bold|italic"
-            android:text="Kucing" />
+    <Button
+        android:id="@+id/btnMakanan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Makanan"/>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:textStyle="bold|italic"
-            android:text="Kucing" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:textStyle="bold|italic"
-            android:text="Ikan" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:textStyle="bold|italic"
-            android:text="Burung" />
-
-    </GridLayout>
+    <Button
+        android:id="@+id/btnPeralatan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Peralatan"/>
 
     <Button
         android:id="@+id/btnLogout"

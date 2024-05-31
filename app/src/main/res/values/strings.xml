@@ -5,6 +5,13 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="please_fill_in_all_field_completely">Please fill in all fields completely</string>
+    <string name="username_not_registered">Username not registered</string>
+    <string name="incorrect_password">Incorrect password</string>
+    <string name="account">Account</string>
+    <string name="successfully">was successfully registered</string>
+    <string name="is_already_in_use">is already in use</string>
+    <string name="select">Select</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -42,4 +49,8 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="login">Login</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="create_new_account">Create New Account</string>
 </resources>

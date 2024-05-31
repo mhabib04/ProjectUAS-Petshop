@@ -30,8 +30,8 @@ public class AdminActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-        binding.daftarKucing.setOnClickListener(v -> {
-            Intent intent = new Intent(this, DaftarActivity.class);
+        binding.btnHewan.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ListAnimalAdminActivity.class);
             startActivity(intent);
         });
 
