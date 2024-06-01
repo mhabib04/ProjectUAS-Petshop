@@ -11,7 +11,7 @@
     <string name="account">Account</string>
     <string name="successfully">was successfully registered</string>
     <string name="is_already_in_use">is already in use</string>
-    <string name="select">Select</string>
+    <string name="select_type">Select Type</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

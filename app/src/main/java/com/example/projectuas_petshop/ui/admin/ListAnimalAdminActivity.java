@@ -2,6 +2,8 @@ package com.example.projectuas_petshop.ui.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -24,9 +26,6 @@ import com.example.projectuas_petshop.databinding.ActivityListAnimalAdminBinding
 import com.example.projectuas_petshop.model.DataItem;
 import com.example.projectuas_petshop.model.DataResponse;
 import com.example.projectuas_petshop.model.adapter.Adapter;
-import com.example.projectuas_petshop.model.adapter.GetData;
-import com.example.projectuas_petshop.model.login.Login;
-import com.example.projectuas_petshop.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +33,11 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class ListAnimalAdminActivity extends AppCompatActivity {
 
     private ActivityListAnimalAdminBinding binding;
-    ArrayList<DataItem> model;
+
     Adapter adapter;
     ApiInterface apiInterface;
     @Override
@@ -67,6 +65,13 @@ public class ListAnimalAdminActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+
     }
 
     public void loadData() {
@@ -103,14 +108,13 @@ public class ListAnimalAdminActivity extends AppCompatActivity {
     private void showPopupMenu(View view, int position) {
         PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+        popupMenu.setGravity(Gravity.END);
         popupMenu.show();
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.edit) {
-                    Toast.makeText(ListAnimalAdminActivity.this, "edit", Toast.LENGTH_SHORT).show();
-                } else if (item.getItemId() == R.id.hapus) {
+                if (item.getItemId() == R.id.hapus) {
                     Toast.makeText(ListAnimalAdminActivity.this, "hapus", Toast.LENGTH_SHORT).show();
                 }
                 return false;
@@ -128,4 +132,5 @@ public class ListAnimalAdminActivity extends AppCompatActivity {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
+
 }

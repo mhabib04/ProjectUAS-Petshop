@@ -92,12 +92,13 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     }
                 } else {
-                    String message = response.body().getMessage();
-                    if (message.equals(getString(R.string.username_not_registered))){
-                        Toast.makeText(LoginActivity.this, getString(R.string.username_not_registered), Toast.LENGTH_SHORT).show();
-                    } else if (message.endsWith(getString(R.string.incorrect_password))) {
-                        Toast.makeText(LoginActivity.this, getString(R.string.incorrect_password), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(LoginActivity.this, getString(R.string.username_not_registered), Toast.LENGTH_SHORT).show();
+//                    String message = response.body().getMessage();
+//                    if (message.equals(getString(R.string.username_not_registered))){
+//                        Toast.makeText(LoginActivity.this, getString(R.string.username_not_registered), Toast.LENGTH_SHORT).show();
+//                    } else if (message.endsWith(getString(R.string.incorrect_password))) {
+//                        Toast.makeText(LoginActivity.this, getString(R.string.incorrect_password), Toast.LENGTH_SHORT).show();
+//                    }
                 }
             }
 

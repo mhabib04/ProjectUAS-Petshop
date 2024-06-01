@@ -1,11 +1,9 @@
 package com.example.projectuas_petshop.api;
 
 import com.example.projectuas_petshop.model.DataResponse;
-import com.example.projectuas_petshop.model.adapter.GetData;
+import com.example.projectuas_petshop.model.insertAnimal.InsertAnimal;
 import com.example.projectuas_petshop.model.login.Login;
 import com.example.projectuas_petshop.model.register.Register;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -33,5 +31,14 @@ public interface ApiInterface {
 
     @GET("tampil_data.php")
     Call<DataResponse> getData();
+
+    @FormUrlEncoded
+    @POST("insertAnimal.php")
+    Call<InsertAnimal> insertAnimalResponse(
+            @Field("type") String type,
+            @Field("breed") String breed,
+            @Field("price") int price,
+            @Field("age") int age
+    );
 
 }

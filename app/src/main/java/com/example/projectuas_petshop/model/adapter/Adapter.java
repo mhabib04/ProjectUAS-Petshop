@@ -41,8 +41,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.id_animal.setText(String.valueOf(data.getIdAnimal()));
         holder.type.setText(data.getType());
         holder.breed.setText(data.getBreed());
-        holder.price.setText(String.valueOf(data.getPrice())); // Ubah tipe data ke string
-        holder.age.setText(String.valueOf(data.getAge())); // Ubah tipe data ke string
+        holder.price.setText(String.valueOf(data.getPrice()));
+        holder.age.setText(String.valueOf(data.getAge()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
