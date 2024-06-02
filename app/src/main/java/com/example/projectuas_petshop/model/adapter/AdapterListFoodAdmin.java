@@ -11,18 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectuas_petshop.R;
-import com.example.projectuas_petshop.model.DataItem;
+import com.example.projectuas_petshop.model.selectFood.FoodDataSelect;
 
 import java.util.ArrayList;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAdmin.ViewHolder> {
 
     private Context context;
-    private ArrayList<DataItem> model;
+    private ArrayList<FoodDataSelect> model;
     private LayoutInflater inflater;
     private OnItemClickListener onItemClickListener;
 
-    public Adapter(Context context, ArrayList<DataItem> model) {
+    public AdapterListFoodAdmin(Context context, ArrayList<FoodDataSelect> model) {
         this.context = context;
         this.model = model;
         this.inflater = LayoutInflater.from(context);
@@ -31,18 +31,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_animal_admin, parent, false);
+        View view = inflater.inflate(R.layout.list_food_admin, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        DataItem data = model.get(position);
-        holder.id_animal.setText(String.valueOf(data.getIdAnimal()));
+        FoodDataSelect data = model.get(position);
+        holder.id_food.setText(String.valueOf(data.getIdFood()));
         holder.type.setText(data.getType());
-        holder.breed.setText(data.getBreed());
+        holder.name.setText(data.getName());
         holder.price.setText(String.valueOf(data.getPrice()));
-        holder.age.setText(String.valueOf(data.getAge()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,15 +67,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView id_animal, type, breed, price, age;
+        TextView id_food, type, name, price;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            id_animal = itemView.findViewById(R.id.txtIdAnimal);
-            type = itemView.findViewById(R.id.txtType);
-            breed = itemView.findViewById(R.id.txtBreed);
-            price = itemView.findViewById(R.id.txtPrice);
-            age = itemView.findViewById(R.id.txtAge);
+            id_food = itemView.findViewById(R.id.txtIdFood);
+            type = itemView.findViewById(R.id.txtTypeFood);
+            name = itemView.findViewById(R.id.txtNameFood);
+            price = itemView.findViewById(R.id.txtPriceFood);
         }
     }
 }

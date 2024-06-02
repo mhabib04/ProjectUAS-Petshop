@@ -1,17 +1,17 @@
-package com.example.projectuas_petshop.model.insertAnimal;
+package com.example.projectuas_petshop.model.insertPet;
 
 import com.google.gson.annotations.SerializedName;
 
-public class InsertAnimal{
+public class PetInsert {
 
 	@SerializedName("data")
-	private DataAnimal dataAnimal;
+	private PetDataInsert petDataInsert;
 
 	@SerializedName("message")
 	private String message;
 
-	public void setDataAnimal(DataAnimal dataAnimal) {
-		this.dataAnimal = dataAnimal;
+	public void setDataAnimal(PetDataInsert petDataInsert) {
+		this.petDataInsert = petDataInsert;
 	}
 
 	public void setMessage(String message) {
@@ -25,8 +25,8 @@ public class InsertAnimal{
 	@SerializedName("status")
 	private boolean status;
 
-	public DataAnimal getData(){
-		return dataAnimal;
+	public PetDataInsert getData(){
+		return petDataInsert;
 	}
 
 	public String getMessage(){

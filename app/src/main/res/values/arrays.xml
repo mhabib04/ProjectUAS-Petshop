@@ -6,4 +6,9 @@
         <item>Bird</item>
         <item>Fish</item>
     </string-array>
+    <string-array name="option_food">
+        <item>Dry</item>
+        <item>Wet</item>
+        <item>Normal</item>
+    </string-array>
 </resources>

@@ -1,7 +1,9 @@
 package com.example.projectuas_petshop.api;
 
-import com.example.projectuas_petshop.model.DataResponse;
-import com.example.projectuas_petshop.model.insertAnimal.InsertAnimal;
+import com.example.projectuas_petshop.model.insertFood.FoodInsert;
+import com.example.projectuas_petshop.model.insertPet.PetInsert;
+import com.example.projectuas_petshop.model.selectFood.FoodSelect;
+import com.example.projectuas_petshop.model.selectPet.PetSelect;
 import com.example.projectuas_petshop.model.login.Login;
 import com.example.projectuas_petshop.model.register.Register;
 
@@ -29,16 +31,25 @@ public interface ApiInterface {
             @Field("role") String role
     );
 
-    @GET("tampil_data.php")
-    Call<DataResponse> getData();
+    @GET("selectPet.php")
+    Call<PetSelect> getPetData();
+    @GET("selectFood.php")
+    Call<FoodSelect> getFoodData();
 
     @FormUrlEncoded
-    @POST("insertAnimal.php")
-    Call<InsertAnimal> insertAnimalResponse(
+    @POST("insertPet.php")
+    Call<PetInsert> insertPetResponse(
             @Field("type") String type,
             @Field("breed") String breed,
             @Field("price") int price,
             @Field("age") int age
+    );
+    @FormUrlEncoded
+    @POST("insertFood.php")
+    Call<FoodInsert> insertFoodResponse(
+            @Field("type") String type,
+            @Field("name") String name,
+            @Field("price") int price
     );
 
 }

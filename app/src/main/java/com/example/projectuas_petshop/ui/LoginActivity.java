@@ -1,14 +1,11 @@
 package com.example.projectuas_petshop.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectuas_petshop.R;
@@ -92,13 +89,12 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, getString(R.string.username_not_registered), Toast.LENGTH_SHORT).show();
-//                    String message = response.body().getMessage();
-//                    if (message.equals(getString(R.string.username_not_registered))){
-//                        Toast.makeText(LoginActivity.this, getString(R.string.username_not_registered), Toast.LENGTH_SHORT).show();
-//                    } else if (message.endsWith(getString(R.string.incorrect_password))) {
-//                        Toast.makeText(LoginActivity.this, getString(R.string.incorrect_password), Toast.LENGTH_SHORT).show();
-//                    }
+                    String message = response.body().getMessage();
+                    if (message.equals(getString(R.string.username_not_registered))){
+                        Toast.makeText(LoginActivity.this, getString(R.string.username_not_registered), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LoginActivity.this, getString(R.string.incorrect_password), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

@@ -1,11 +1,14 @@
-package com.example.projectuas_petshop.model.insertAnimal;
+package com.example.projectuas_petshop.model.selectPet;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DataAnimal {
+public class PetDataSelect {
 
 	@SerializedName("price")
 	private int price;
+
+	@SerializedName("id_pet")
+	private int idPet;
 
 	@SerializedName("type")
 	private String type;
@@ -16,24 +19,12 @@ public class DataAnimal {
 	@SerializedName("age")
 	private int age;
 
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public void setBreed(String breed) {
-		this.breed = breed;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
 	public int getPrice(){
 		return price;
+	}
+
+	public int getIdPet(){
+		return idPet;
 	}
 
 	public String getType(){

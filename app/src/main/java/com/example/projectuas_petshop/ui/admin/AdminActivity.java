@@ -4,17 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.databinding.ActivityAdminBinding;
 import com.example.projectuas_petshop.ui.LoginActivity;
-import com.example.projectuas_petshop.ui.MainActivity;
 import com.example.projectuas_petshop.ui.SessionManager;
+import com.example.projectuas_petshop.ui.admin.food.ListFoodAdminActivity;
+import com.example.projectuas_petshop.ui.admin.pet.ListPetAdminActivity;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -31,7 +27,12 @@ public class AdminActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
         binding.btnHewan.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListAnimalAdminActivity.class);
+            Intent intent = new Intent(this, ListPetAdminActivity.class);
+            startActivity(intent);
+        });
+
+        binding.btnMakanan.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ListFoodAdminActivity.class);
             startActivity(intent);
         });
 
