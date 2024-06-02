@@ -31,7 +31,7 @@ tools:context=".ui.admin.AdminActivity">
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
-            android:src="@drawable/cat" />
+            android:src="@drawable/cat2" />
         <TextView
             android:layout_gravity="center"
             android:text="Hewan"
@@ -50,20 +50,6 @@ tools:context=".ui.admin.AdminActivity">
             android:text="Makanan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
-        <ImageView
-            android:id="@+id/btnPerlengkapan"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/pet_accessories" />
-        <TextView
-            android:layout_gravity="center"
-            android:text="Perlengkapan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
 
         <Button
             android:id="@+id/btnLogout"

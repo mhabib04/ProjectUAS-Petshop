@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.user.UserActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.food.ListFoodAdminActivity"
             android:exported="false" />
         <activity

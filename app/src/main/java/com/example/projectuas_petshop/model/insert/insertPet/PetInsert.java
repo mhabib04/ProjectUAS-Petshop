@@ -1,4 +1,4 @@
-package com.example.projectuas_petshop.model.insertPet;
+package com.example.projectuas_petshop.model.insert.insertPet;
 
 import com.google.gson.annotations.SerializedName;
 

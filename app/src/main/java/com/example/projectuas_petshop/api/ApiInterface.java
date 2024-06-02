@@ -1,9 +1,11 @@
 package com.example.projectuas_petshop.api;
 
-import com.example.projectuas_petshop.model.insertFood.FoodInsert;
-import com.example.projectuas_petshop.model.insertPet.PetInsert;
-import com.example.projectuas_petshop.model.selectFood.FoodSelect;
-import com.example.projectuas_petshop.model.selectPet.PetSelect;
+import com.example.projectuas_petshop.model.delete.deleteFood.DeleteFood;
+import com.example.projectuas_petshop.model.delete.deletePet.DeletePet;
+import com.example.projectuas_petshop.model.insert.insertFood.FoodInsert;
+import com.example.projectuas_petshop.model.insert.insertPet.PetInsert;
+import com.example.projectuas_petshop.model.select.selectFood.FoodSelect;
+import com.example.projectuas_petshop.model.select.selectPet.PetSelect;
 import com.example.projectuas_petshop.model.login.Login;
 import com.example.projectuas_petshop.model.register.Register;
 
@@ -51,5 +53,12 @@ public interface ApiInterface {
             @Field("name") String name,
             @Field("price") int price
     );
+
+    @FormUrlEncoded
+    @POST("deletePet.php")
+    Call<DeletePet> deletePet(@Field("id_pet") int id_pet);
+    @FormUrlEncoded
+    @POST("deleteFood.php")
+    Call<DeleteFood> deleteFood(@Field("id_food") int id_food);
 
 }

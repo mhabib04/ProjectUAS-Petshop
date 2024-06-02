@@ -1,4 +1,4 @@
-package com.example.projectuas_petshop.model.selectFood;
+package com.example.projectuas_petshop.model.select.selectFood;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;

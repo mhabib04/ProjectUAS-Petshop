@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
+import com.example.projectuas_petshop.ui.user.UserActivity;
 
 import java.util.HashMap;
 
@@ -35,7 +36,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else if ("user".equals(role)) {
-                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, UserActivity.class);
                     startActivity(intent);
                     finish();
                 } else if(!sessionManager.isLoggedIn()){

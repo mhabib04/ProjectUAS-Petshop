@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectuas_petshop.R;
-import com.example.projectuas_petshop.model.selectFood.FoodDataSelect;
+import com.example.projectuas_petshop.model.select.selectFood.FoodDataSelect;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAd
             @Override
             public void onClick(View v) {
                 if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v, position);
+                    onItemClickListener.onItemClick(v, position, data.getIdFood());
                 }
             }
         });
@@ -63,7 +63,7 @@ public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAd
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, int position, int idFood);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

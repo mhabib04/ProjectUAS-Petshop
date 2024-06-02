@@ -5,13 +5,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectuas_petshop.R;
-import com.example.projectuas_petshop.model.selectPet.PetDataSelect;
+import com.example.projectuas_petshop.model.select.selectPet.PetDataSelect;
 
 import java.util.ArrayList;
 
@@ -43,12 +44,21 @@ public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmi
         holder.breed.setText(data.getBreed());
         holder.price.setText(String.valueOf(data.getPrice()));
         holder.age.setText(String.valueOf(data.getAge()));
+        if (data.getType().equals("Dog")) {
+            holder.img_pet.setImageResource(R.drawable.dog);
+        } else if (data.getType().equals("Cat")) {
+            holder.img_pet.setImageResource(R.drawable.cat2);
+        } else if (data.getType().equals("Bird")) {
+            holder.img_pet.setImageResource(R.drawable.robin);
+        } else if (data.getType().equals("Fish")) {
+            holder.img_pet.setImageResource(R.drawable.fish);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v, position);
+                    onItemClickListener.onItemClick(v, position, data.getIdPet());
                 }
             }
         });
@@ -64,11 +74,12 @@ public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmi
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, int position, int idPet);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView id_pet, type, breed, price, age;
+        ImageView img_pet;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,6 +88,7 @@ public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmi
             breed = itemView.findViewById(R.id.txtBreedPet);
             price = itemView.findViewById(R.id.txtPricePet);
             age = itemView.findViewById(R.id.txtAgePet);
+            img_pet = itemView.findViewById(R.id.imgPet);
         }
     }
 }

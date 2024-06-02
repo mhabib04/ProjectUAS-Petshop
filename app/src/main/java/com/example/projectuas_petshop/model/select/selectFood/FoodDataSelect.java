@@ -1,11 +1,11 @@
-package com.example.projectuas_petshop.model.insertFood;
+package com.example.projectuas_petshop.model.select.selectFood;
 
 import com.google.gson.annotations.SerializedName;
 
-public class FootDataInsert {
+public class FoodDataSelect {
 
 	@SerializedName("price")
-	private String price;
+	private int price;
 
 	@SerializedName("name")
 	private String name;
@@ -13,7 +13,10 @@ public class FootDataInsert {
 	@SerializedName("type")
 	private String type;
 
-	public String getPrice(){
+	@SerializedName("id_food")
+	private int idFood;
+
+	public int getPrice(){
 		return price;
 	}
 
@@ -23,5 +26,9 @@ public class FootDataInsert {
 
 	public String getType(){
 		return type;
+	}
+
+	public int getIdFood(){
+		return idFood;
 	}
 }

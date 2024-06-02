@@ -15,6 +15,7 @@ import com.example.projectuas_petshop.databinding.ActivityLoginBinding;
 import com.example.projectuas_petshop.model.login.Login;
 import com.example.projectuas_petshop.model.login.LoginData;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
+import com.example.projectuas_petshop.ui.user.UserActivity;
 
 import java.util.HashMap;
 
@@ -84,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     } else if ("user".equals(role)) {
                         Toast.makeText(LoginActivity.this, response.body().getLoginData().getName(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, UserActivity.class);
                         startActivity(intent);
                         finish();
                     }
