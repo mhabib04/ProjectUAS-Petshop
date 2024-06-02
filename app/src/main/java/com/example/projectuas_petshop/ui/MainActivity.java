@@ -28,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
         usernameMain = sessionManager.getUserDetail().get(SessionManager.USERNAME);
         nameMain = sessionManager.getUserDetail().get(SessionManager.ROLE);
 
-        binding.etMainUsername.setText("Username : @" + usernameMain);
-        binding.etMainName.setText("Name : " + nameMain);
-
         binding.btnLogout.setOnClickListener(v -> {
             sessionManager.logoutSession();
             moveToLogin();
