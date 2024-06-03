@@ -9,11 +9,15 @@ import com.example.projectuas_petshop.model.select.selectPet.PetSelect;
 import com.example.projectuas_petshop.model.login.Login;
 import com.example.projectuas_petshop.model.register.Register;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ApiInterface {
 
@@ -38,13 +42,14 @@ public interface ApiInterface {
     @GET("selectFood.php")
     Call<FoodSelect> getFoodData();
 
-    @FormUrlEncoded
+    @Multipart
     @POST("insertPet.php")
     Call<PetInsert> insertPetResponse(
-            @Field("type") String type,
-            @Field("breed") String breed,
-            @Field("price") int price,
-            @Field("age") int age
+            @Part("type") RequestBody type,
+            @Part("breed") RequestBody breed,
+            @Part("price") RequestBody price,
+            @Part("age") RequestBody age,
+            @Part MultipartBody.Part image
     );
     @FormUrlEncoded
     @POST("insertFood.php")

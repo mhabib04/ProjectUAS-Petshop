@@ -2,12 +2,15 @@ package com.example.projectuas_petshop.ui.admin.pet;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +19,11 @@ import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityAddPetBinding;
 import com.example.projectuas_petshop.model.insert.insertPet.PetInsert;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,12 +32,21 @@ public class AddPetActivity extends AppCompatActivity {
 
     private ActivityAddPetBinding binding;
     ApiInterface apiInterface;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAddPetBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFileChooser();
+            }
+        });
 
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,22 +56,47 @@ public class AddPetActivity extends AppCompatActivity {
                 String priceString = binding.etPrice.getText().toString().trim();
                 String ageString = binding.etAge.getText().toString().trim();
 
-                if (binding.autoCompleteText.getText().toString().isEmpty() || breed.isEmpty() || priceString.isEmpty() || ageString.isEmpty()){
+                if (binding.autoCompleteText.getText().toString().isEmpty() || breed.isEmpty() || priceString.isEmpty() || ageString.isEmpty()) {
                     Toast.makeText(AddPetActivity.this, "Selesaikan pengisian", Toast.LENGTH_SHORT).show();
+                } else if (imageUri == null) {
+                    Toast.makeText(AddPetActivity.this, "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
                 } else {
                     int price = Integer.parseInt(priceString);
                     int age = Integer.parseInt(ageString);
-                    addPet(selectType, breed, price, age);
+                    addPet(selectType, breed, price, age, imageUri);
                 }
-
             }
         });
 
     }
 
-    private void addPet(String type, String breed, int price, int age) {
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode==1 && data!=null){
+            imageUri = data.getData();
+            binding.imgUploadPet.setImageURI(imageUri);
+        }
+    }
+
+    private void addPet(String type, String breed, int price, int age, Uri imageUri) {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<PetInsert> insertAnimalCall = apiInterface.insertPetResponse(type,breed, price, age);
+        File file = new File(FileUtils.getPath(this, imageUri));
+        RequestBody typeBody = RequestBody.create(type, MediaType.parse("text/plain"));
+        RequestBody breedBody = RequestBody.create(breed, MediaType.parse("text/plain"));
+        RequestBody priceBody = RequestBody.create(String.valueOf(price), MediaType.parse("text/plain"));
+        RequestBody ageBody = RequestBody.create(String.valueOf(age), MediaType.parse("text/plain"));
+        RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/jpeg"));
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        Call<PetInsert> insertAnimalCall = apiInterface.insertPetResponse(typeBody,breedBody, priceBody, ageBody, body);
         insertAnimalCall.enqueue(new Callback<PetInsert>() {
             @Override
             public void onResponse(@NonNull Call<PetInsert> call, @NonNull Response<PetInsert> response) {

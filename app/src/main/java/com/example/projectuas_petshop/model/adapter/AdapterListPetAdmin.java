@@ -2,6 +2,9 @@ package com.example.projectuas_petshop.model.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,15 +47,9 @@ public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmi
         holder.breed.setText(data.getBreed());
         holder.price.setText(String.valueOf(data.getPrice()));
         holder.age.setText(String.valueOf(data.getAge()));
-        if (data.getType().equals("Dog")) {
-            holder.img_pet.setImageResource(R.drawable.dog);
-        } else if (data.getType().equals("Cat")) {
-            holder.img_pet.setImageResource(R.drawable.cat2);
-        } else if (data.getType().equals("Bird")) {
-            holder.img_pet.setImageResource(R.drawable.robin);
-        } else if (data.getType().equals("Fish")) {
-            holder.img_pet.setImageResource(R.drawable.fish);
-        }
+        byte[] imageBytes = Base64.decode(data.getImage().substring(data.getImage().indexOf(",") + 1), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        holder.img_pet.setImageBitmap(bitmap);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

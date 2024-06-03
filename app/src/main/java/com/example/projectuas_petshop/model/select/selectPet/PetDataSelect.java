@@ -15,6 +15,8 @@ public class PetDataSelect {
 
 	@SerializedName("breed")
 	private String breed;
+	@SerializedName("image")
+	private String image;
 
 	@SerializedName("age")
 	private int age;
@@ -37,5 +39,13 @@ public class PetDataSelect {
 
 	public int getAge(){
 		return age;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getImage() {
+		return image;
 	}
 }

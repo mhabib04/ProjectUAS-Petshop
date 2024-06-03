@@ -94,11 +94,13 @@ public class ListPetAdminActivity extends AppCompatActivity {
     }
 
     public void loadData() {
+        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<PetSelect> call = apiInterface.getPetData();
         call.enqueue(new Callback<PetSelect>() {
             @Override
             public void onResponse(Call<PetSelect> call, Response<PetSelect> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     PetSelect petSelect = response.body();
                     List<PetDataSelect> dataList = petSelect.getData();
@@ -126,6 +128,7 @@ public class ListPetAdminActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PetSelect> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(ListPetAdminActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

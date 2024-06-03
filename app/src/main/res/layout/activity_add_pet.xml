@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.admin.petSelect.AddPetActivity">
+    tools:context=".ui.admin.pet.AddPetActivity">
 
     <TextView
         android:text="Add Animal"
@@ -118,12 +118,26 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imgUploadPet"
+        android:layout_gravity="center"
+        android:layout_width="250dp"
+        android:layout_height="200dp"/>
+
+    <Button
+        android:id="@+id/btnUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Upload" />
+
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:layout_gravity="center"
-        android:text="Add"/>
+        android:layout_marginTop="20dp"
+        android:text="Add" />
 
 </LinearLayout>

@@ -36,7 +36,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else if ("user".equals(role)) {
-                    Intent intent = new Intent(SplashScreenActivity.this, UserActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 } else if(!sessionManager.isLoggedIn()){
