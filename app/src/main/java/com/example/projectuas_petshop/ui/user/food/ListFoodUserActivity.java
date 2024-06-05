@@ -68,14 +68,14 @@ public class ListFoodUserActivity extends AppCompatActivity {
                     binding.listFoodUser.setAdapter(adapterListFoodUser);
                     adapterListFoodUser.setOnItemClickListener(new AdapterListFoodUser.OnItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position, int idPet) {
+                        public void onItemClick(View view, int position, int idFood) {
                             Intent intent = new Intent(ListFoodUserActivity.this, BuyFoodActivity.class);
-                            intent.putExtra("id", idPet);
+                            intent.putExtra("id_food", idFood);
                             startActivity(intent);
                         }
                     });
                 } else {
-                    Toast.makeText(ListFoodUserActivity.this, "DAta kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListFoodUserActivity.this, "Data kosong", Toast.LENGTH_SHORT).show();
                 }
             }
 

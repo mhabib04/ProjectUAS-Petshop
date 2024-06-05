@@ -24,10 +24,16 @@ import com.example.projectuas_petshop.model.select.getPet.GetPet;
 import com.example.projectuas_petshop.model.select.getPet.GetPetData;
 import com.example.projectuas_petshop.model.select.selectPetByType.PetDataSelectByType;
 import com.example.projectuas_petshop.model.select.selectPetByType.PetSelectByType;
+import com.example.projectuas_petshop.model.transaction.Transaction;
+import com.example.projectuas_petshop.ui.SessionManager;
 import com.example.projectuas_petshop.ui.user.SuccesBuyActivity;
+import com.example.projectuas_petshop.ui.user.food.BuyFoodActivity;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,6 +42,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BuyPetActivity extends AppCompatActivity {
+    SessionManager sessionManager;
     private ActivityBuyPetBinding binding;
     ApiInterface apiInterface;
     int id_pet;
@@ -48,10 +55,15 @@ public class BuyPetActivity extends AppCompatActivity {
         id_pet = getIntent().getIntExtra("id_pet", 0);
 
         getData(id_pet);
+        sessionManager = new SessionManager(this);
+        HashMap<String, String> userDetail = sessionManager.getUserDetail();
+        String id_user = userDetail.get(SessionManager.ID_USER);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String transactionDate = sdf.format(new Date());
 
         binding.buttonBuy.setOnClickListener( v-> {
-            Intent intent = new Intent(BuyPetActivity.this, SuccesBuyActivity.class);
-            startActivity(intent);
+            transactionBuy(Integer.parseInt(id_user), id_pet, transactionDate);
         });
 
     }
@@ -88,4 +100,23 @@ public class BuyPetActivity extends AppCompatActivity {
         });
     }
 
+    public void transactionBuy(int id_user, int id_pet, String date){
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<Transaction> call = apiInterface.transaction(id_user, id_pet, null, date);
+        call.enqueue(new Callback<Transaction>() {
+            @Override
+            public void onResponse(Call<Transaction> call, Response<Transaction> response) {
+                if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
+                    Toast.makeText(BuyPetActivity.this, "Berhasil", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(BuyPetActivity.this, "gagal cok", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Transaction> call, Throwable t) {
+                Toast.makeText(BuyPetActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

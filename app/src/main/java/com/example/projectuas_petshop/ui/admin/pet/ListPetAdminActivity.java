@@ -23,6 +23,8 @@ import com.example.projectuas_petshop.model.select.selectPet.PetDataSelect;
 import com.example.projectuas_petshop.model.select.selectPet.PetSelect;
 import com.example.projectuas_petshop.model.adapter.AdapterListPetAdmin;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
+import com.example.projectuas_petshop.ui.user.pet.BuyPetActivity;
+import com.example.projectuas_petshop.ui.user.pet.ListPetUserActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -124,6 +126,10 @@ public class ListPetAdminActivity extends AppCompatActivity {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
+                } else if (item.getItemId() == R.id.edit) {
+                    Intent intent = new Intent(ListPetAdminActivity.this, EditPetActivity.class);
+                    intent.putExtra("id_pet", id_pet);
+                    startActivity(intent);
                 }
                 return false;
             }

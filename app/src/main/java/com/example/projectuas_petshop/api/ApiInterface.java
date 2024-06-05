@@ -4,6 +4,7 @@ import com.example.projectuas_petshop.model.delete.deleteFood.DeleteFood;
 import com.example.projectuas_petshop.model.delete.deletePet.DeletePet;
 import com.example.projectuas_petshop.model.insert.insertFood.FoodInsert;
 import com.example.projectuas_petshop.model.insert.insertPet.PetInsert;
+import com.example.projectuas_petshop.model.select.getFood.GetFood;
 import com.example.projectuas_petshop.model.select.getPet.GetPet;
 import com.example.projectuas_petshop.model.select.selectFood.FoodSelect;
 import com.example.projectuas_petshop.model.select.selectFoodByType.FoodSelectByType;
@@ -12,6 +13,7 @@ import com.example.projectuas_petshop.model.login.Login;
 import com.example.projectuas_petshop.model.register.Register;
 import com.example.projectuas_petshop.model.select.selectPetByType.PetSelectByType;
 import com.example.projectuas_petshop.model.transaction.Transaction;
+import com.example.projectuas_petshop.model.update.Update;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -55,7 +57,7 @@ public interface ApiInterface {
             @Part("age") RequestBody age,
             @Part MultipartBody.Part image
     );
-    @FormUrlEncoded
+    @Multipart
     @POST("insertFood.php")
     Call<FoodInsert> insertFoodResponse(
             @Part("type") RequestBody type,
@@ -87,12 +89,29 @@ public interface ApiInterface {
     Call<GetPet> getPet(
             @Field("id_pet") int id_pet
     );
+    @FormUrlEncoded
+    @POST("getFood.php")
+    Call<GetFood> getFood(
+            @Field("id_food") int id_food
+    );
 
     @FormUrlEncoded
     @POST("transaction.php")
     Call<Transaction> transaction(
             @Field("id_user") int id_user,
-            @Field("id_pet") int id_pet,
-            @Field("id_food") int id_food
+            @Field("id_pet") Integer id_pet,
+            @Field("id_food") Integer id_food,
+            @Field("transaction_date") String transactionDate
+    );
+
+    @Multipart
+    @POST("updatePet.php")
+    Call<Update> updatePet(
+            @Part("id_pet") RequestBody idPet,
+            @Part("type") RequestBody type,
+            @Part("breed") RequestBody breed,
+            @Part("price") RequestBody price,
+            @Part("age") RequestBody age,
+            @Part MultipartBody.Part image
     );
 }

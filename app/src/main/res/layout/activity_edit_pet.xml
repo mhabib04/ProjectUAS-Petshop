@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.admin.pet.AddPetActivity">
+    tools:context=".ui.admin.pet.EditPetActivity">
 
     <TextView
-        android:text="Add Pet"
+        android:text="Edit Pet"
         android:textSize="34dp"
         android:textStyle="bold"
         android:textAlignment="center"
@@ -134,11 +134,11 @@
         android:text="Upload" />
 
     <Button
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="Add" />
+        android:text="Update" />
 
 </LinearLayout>

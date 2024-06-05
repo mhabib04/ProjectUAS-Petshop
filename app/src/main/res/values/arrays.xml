@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="option_animal">
+    <string-array name="option_pet">
         <item>Cat</item>
         <item>Dog</item>
         <item>Bird</item>
