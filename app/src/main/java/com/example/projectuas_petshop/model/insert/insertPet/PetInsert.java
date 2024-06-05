@@ -10,6 +10,9 @@ public class PetInsert {
 	@SerializedName("message")
 	private String message;
 
+	@SerializedName("status")
+	private boolean status;
+
 	public void setDataAnimal(PetDataInsert petDataInsert) {
 		this.petDataInsert = petDataInsert;
 	}
@@ -22,8 +25,6 @@ public class PetInsert {
 		this.status = status;
 	}
 
-	@SerializedName("status")
-	private boolean status;
 
 	public PetDataInsert getData(){
 		return petDataInsert;

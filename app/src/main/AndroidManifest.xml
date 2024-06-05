@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.CAMERA"
         tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
 
     <application
@@ -21,6 +22,21 @@
         android:theme="@style/Theme.ProjectUASPetshop"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.user.SuccesBuyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.user.pet.BuyPetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.user.food.BuyFoodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.user.food.ListFoodUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.user.pet.ListPetUserActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.user.UserActivity"
             android:exported="false" />

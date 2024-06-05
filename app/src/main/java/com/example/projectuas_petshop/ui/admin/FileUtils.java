@@ -1,4 +1,4 @@
-package com.example.projectuas_petshop.ui.admin.pet;
+package com.example.projectuas_petshop.ui.admin;
 
 import android.content.Context;
 import android.database.Cursor;

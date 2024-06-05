@@ -16,6 +16,17 @@ public class FoodDataSelect {
 	@SerializedName("id_food")
 	private int idFood;
 
+	@SerializedName("image")
+	private String image;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public int getPrice(){
 		return price;
 	}

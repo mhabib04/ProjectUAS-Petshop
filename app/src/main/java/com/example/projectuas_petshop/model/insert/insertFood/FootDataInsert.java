@@ -13,6 +13,17 @@ public class FootDataInsert {
 	@SerializedName("type")
 	private String type;
 
+	@SerializedName("image")
+	private String image;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public String getPrice(){
 		return price;
 	}

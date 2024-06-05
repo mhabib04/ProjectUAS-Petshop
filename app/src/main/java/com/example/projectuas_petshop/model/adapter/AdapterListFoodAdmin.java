@@ -2,9 +2,13 @@ package com.example.projectuas_petshop.model.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +46,9 @@ public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAd
         holder.type.setText(data.getType());
         holder.name.setText(data.getName());
         holder.price.setText(String.valueOf(data.getPrice()));
+        byte[] imageBytes = Base64.decode(data.getImage().substring(data.getImage().indexOf(",") + 1), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        holder.imgFood.setImageBitmap(bitmap);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +75,7 @@ public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView id_food, type, name, price;
+        ImageView imgFood;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,6 +83,7 @@ public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAd
             type = itemView.findViewById(R.id.txtTypeFood);
             name = itemView.findViewById(R.id.txtNameFood);
             price = itemView.findViewById(R.id.txtPriceFood);
+            imgFood = itemView.findViewById(R.id.imgFood);
         }
     }
 }

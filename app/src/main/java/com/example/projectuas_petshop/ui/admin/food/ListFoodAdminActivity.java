@@ -50,6 +50,8 @@ public class ListFoodAdminActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        loadData();
+
         binding.fabFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,34 +62,8 @@ public class ListFoodAdminActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        startRepeatedTask();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopRepeatedTask();
-    }
-
-    private void startRepeatedTask() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadData();
-                handler.postDelayed(this, 3000);
-            }
-        }, 10000);
-    }
-
-    private void stopRepeatedTask() {
-        handler.removeCallbacksAndMessages(null);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
-    }
 
     public void loadData() {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -95,7 +71,7 @@ public class ListFoodAdminActivity extends AppCompatActivity {
         call.enqueue(new Callback<FoodSelect>() {
             @Override
             public void onResponse(Call<FoodSelect> call, Response<FoodSelect> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     FoodSelect pet = response.body();
                     List<FoodDataSelect> dataList = pet.getData();
 
@@ -108,7 +84,7 @@ public class ListFoodAdminActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ListFoodAdminActivity.this, "Response error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListFoodAdminActivity.this, "Data kosong", Toast.LENGTH_SHORT).show();
                 }
             }
 

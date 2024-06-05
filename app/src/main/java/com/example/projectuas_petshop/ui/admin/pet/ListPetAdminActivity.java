@@ -23,6 +23,7 @@ import com.example.projectuas_petshop.model.select.selectPet.PetDataSelect;
 import com.example.projectuas_petshop.model.select.selectPet.PetSelect;
 import com.example.projectuas_petshop.model.adapter.AdapterListPetAdmin;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class ListPetAdminActivity extends AppCompatActivity {
 
     AdapterListPetAdmin adapterListPetAdmin;
     ApiInterface apiInterface;
-    private Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,55 +64,18 @@ public class ListPetAdminActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        startRepeatedTask();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopRepeatedTask();
-    }
-
-    private void startRepeatedTask() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadData();
-                handler.postDelayed(this, 3000);
-            }
-        }, 10000);
-    }
-
-    private void stopRepeatedTask() {
-        handler.removeCallbacksAndMessages(null);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
-
-    }
 
     public void loadData() {
-        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<PetSelect> call = apiInterface.getPetData();
         call.enqueue(new Callback<PetSelect>() {
             @Override
             public void onResponse(Call<PetSelect> call, Response<PetSelect> response) {
-                binding.progressBar.setVisibility(View.GONE);
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     PetSelect petSelect = response.body();
                     List<PetDataSelect> dataList = petSelect.getData();
-
-                    ArrayList<PetDataSelect> filteredList = new ArrayList<>();
-
-                    for (PetDataSelect data : dataList) {
-                        if (data.getType().equals("Dog")) {
-                            filteredList.add(data);
-                        }
-                    }
 
                     adapterListPetAdmin = new AdapterListPetAdmin(getApplicationContext(), (ArrayList<PetDataSelect>) dataList);
                     binding.listPetAdmin.setAdapter(adapterListPetAdmin);
@@ -122,13 +86,12 @@ public class ListPetAdminActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ListPetAdminActivity.this, "Response error", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content), "Data Kosong", Snackbar.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PetSelect> call, Throwable t) {
-                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(ListPetAdminActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
