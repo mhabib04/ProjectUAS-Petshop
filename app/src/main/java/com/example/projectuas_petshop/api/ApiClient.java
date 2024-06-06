@@ -6,8 +6,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     //Bikin database dan hosting domain nya
-    private static final String BASE_URL = "https://bibsky.my.id/projectUAS-petshop/";
-    //private static final String BASE_URL = "http://10.0.30.6/projectUAS-petshop/";
+    //private static final String BASE_URL = "https://bibsky.my.id/projectUAS-petshop/";
+    private static final String BASE_URL = "http://10.0.30.6/projectUAS-petshop/";
 
     private static Retrofit retrofit;
 

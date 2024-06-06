@@ -116,6 +116,7 @@ public class ListPetAdminActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deletePet(id_pet);
+                            loadData();
                         }
                     });
                     builder.setPositiveButton("Tidak", new DialogInterface.OnClickListener() {

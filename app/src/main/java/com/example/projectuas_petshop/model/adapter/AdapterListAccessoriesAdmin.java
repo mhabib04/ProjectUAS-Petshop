@@ -15,18 +15,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectuas_petshop.R;
-import com.example.projectuas_petshop.model.select.selectPet.PetDataSelect;
+import com.example.projectuas_petshop.model.select.selectAccessories.AccessoriesDataSelect;
 
 import java.util.ArrayList;
 
-public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmin.ViewHolder> {
-
+public class AdapterListAccessoriesAdmin extends RecyclerView.Adapter<AdapterListAccessoriesAdmin.ViewHolder> {
     private Context context;
-    private ArrayList<PetDataSelect> model;
+    private ArrayList<AccessoriesDataSelect> model;
     private LayoutInflater inflater;
     private OnItemClickListener onItemClickListener;
 
-    public AdapterListPetAdmin(Context context, ArrayList<PetDataSelect> model) {
+    public AdapterListAccessoriesAdmin(Context context, ArrayList<AccessoriesDataSelect> model) {
         this.context = context;
         this.model = model;
         this.inflater = LayoutInflater.from(context);
@@ -35,26 +34,24 @@ public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_pet_admin, parent, false);
+        View view = inflater.inflate(R.layout.list_accessories_admin, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        PetDataSelect data = model.get(position);
-        holder.type.setText(data.getType());
-        holder.breed.setText(data.getBreed());
+        AccessoriesDataSelect data = model.get(position);
+        holder.name.setText(data.getName());
         holder.price.setText(String.valueOf(data.getPrice()));
-        holder.age.setText(String.valueOf(data.getAge()));
         byte[] imageBytes = Base64.decode(data.getImage().substring(data.getImage().indexOf(",") + 1), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        holder.img_pet.setImageBitmap(bitmap);
+        holder.imgAccessories.setImageBitmap(bitmap);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v, position, data.getIdPet());
+                    onItemClickListener.onItemClick(v, position, data.getIdAccessories());
                 }
             }
         });
@@ -70,20 +67,18 @@ public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmi
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, int idPet);
+        void onItemClick(View view, int position, int idAccessories);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView type, breed, price, age;
-        ImageView img_pet;
+        TextView name, price;
+        ImageView imgAccessories;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            type = itemView.findViewById(R.id.txtTypePet);
-            breed = itemView.findViewById(R.id.txtBreedPet);
-            price = itemView.findViewById(R.id.txtPricePet);
-            age = itemView.findViewById(R.id.txtAgePet);
-            img_pet = itemView.findViewById(R.id.imgPet);
+            name = itemView.findViewById(R.id.txtNameFood);
+            price = itemView.findViewById(R.id.txtPriceFood);
+            imgAccessories = itemView.findViewById(R.id.imgAccessories);
         }
     }
 }

@@ -12,7 +12,6 @@ import com.example.projectuas_petshop.model.select.selectPet.PetSelect;
 import com.example.projectuas_petshop.model.login.Login;
 import com.example.projectuas_petshop.model.register.Register;
 import com.example.projectuas_petshop.model.select.selectPetByType.PetSelectByType;
-import com.example.projectuas_petshop.model.transaction.Transaction;
 import com.example.projectuas_petshop.model.update.Update;
 
 import okhttp3.MultipartBody;
@@ -93,15 +92,6 @@ public interface ApiInterface {
     @POST("getFood.php")
     Call<GetFood> getFood(
             @Field("id_food") int id_food
-    );
-
-    @FormUrlEncoded
-    @POST("transaction.php")
-    Call<Transaction> transaction(
-            @Field("id_user") int id_user,
-            @Field("id_pet") Integer id_pet,
-            @Field("id_food") Integer id_food,
-            @Field("transaction_date") String transactionDate
     );
 
     @Multipart

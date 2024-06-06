@@ -16,7 +16,7 @@
         android:layout_margin="8dp">
 
         <ImageView
-            android:id="@+id/imgPet"
+            android:id="@+id/imgAccessories"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@color/cardview_dark_background"
@@ -31,34 +31,16 @@
             android:layout_margin="5dp">
 
             <TextView
-                android:id="@+id/txtTypePet"
+                android:id="@+id/txtNameAccessories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Type"
+                android:text="Name"
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
                 />
 
             <TextView
-                android:id="@+id/txtBreedPet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Breed"
-                android:textSize="15sp"
-                android:paddingLeft="5dp"
-                />
-
-            <TextView
-                android:id="@+id/txtPricePet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Price"
-                android:textSize="15sp"
-                android:paddingLeft="5dp"
-                />
-
-            <TextView
-                android:id="@+id/txtAgePet"
+                android:id="@+id/txtPriceAccessories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Price"
