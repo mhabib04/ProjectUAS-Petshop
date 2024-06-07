@@ -71,6 +71,23 @@
                 android:drawablePadding="20dp"
                 android:padding="10dp"
                 android:layout_marginBottom="15dp"/>
+            <ImageView
+                android:id="@+id/imgUploadImage"
+                android:layout_gravity="center"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                app:srcCompat="@android:drawable/ic_menu_gallery"/>
+
+            <Button
+                android:id="@+id/btnSelectImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="#4D869C"
+                android:textColor="@color/black"
+                android:text="Select Image" />
 
             <Button
                 android:id="@+id/btnRegister"

@@ -39,6 +39,7 @@ public class BuyPetActivity extends AppCompatActivity {
         getData(id_pet);
 
         binding.buttonBuy.setOnClickListener( v-> {
+            Toast.makeText(BuyPetActivity.this, "Berhasil", Toast.LENGTH_SHORT).show();
         });
 
     }

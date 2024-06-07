@@ -1,8 +1,8 @@
-package com.example.projectuas_petshop.model.delete.deleteFood;
+package com.example.projectuas_petshop.model.delete;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DeleteFood {
+public class Delete {
     @SerializedName("status")
     private boolean status;
 

@@ -14,6 +14,8 @@ public class LoginData {
 	private String username;
 	@SerializedName("role")
 	private String role;
+	@SerializedName("image")
+	private String image;
 
 	public void setIdUser(String idUser){
 		this.idUser = idUser;
@@ -45,5 +47,13 @@ public class LoginData {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 }

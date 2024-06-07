@@ -15,9 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityAddFoodBinding;
-import com.example.projectuas_petshop.model.insert.insertFood.FoodInsert;
+import com.example.projectuas_petshop.model.insert.Insert;
 import com.example.projectuas_petshop.ui.admin.FileUtils;
-import com.example.projectuas_petshop.ui.admin.pet.AddPetActivity;
+
 
 import java.io.File;
 
@@ -50,16 +50,16 @@ public class AddFoodActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String selectType = binding.autoCompleteText.getText().toString().trim();
-                String breed = binding.etName.getText().toString().trim();
+                String name = binding.etName.getText().toString().trim();
                 String priceString = binding.etPrice.getText().toString().trim();
 
-                if (binding.autoCompleteText.getText().toString().isEmpty() || breed.isEmpty() || priceString.isEmpty()) {
+                if (binding.autoCompleteText.getText().toString().isEmpty() || name.isEmpty() || priceString.isEmpty()) {
                     Toast.makeText(AddFoodActivity.this, "Selesaikan pengisian", Toast.LENGTH_SHORT).show();
                 } else if (imageUri == null) {
                     Toast.makeText(AddFoodActivity.this, "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
                 } else {
                     int price = Integer.parseInt(priceString);
-                    addFood(selectType, breed, price, imageUri);
+                    addFood(selectType, name, price, imageUri);
                 }
             }
         });
@@ -79,7 +79,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
         if (requestCode==1 && data!=null){
             imageUri = data.getData();
-            binding.imgUploadPet.setImageURI(imageUri);
+            binding.imgUploadFood.setImageURI(imageUri);
         }
     }
 
@@ -90,11 +90,11 @@ public class AddFoodActivity extends AppCompatActivity {
         RequestBody nameBody = RequestBody.create(name, MediaType.parse("text/plain"));
         RequestBody priceBody = RequestBody.create(String.valueOf(price), MediaType.parse("text/plain"));
         RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/jpeg"));
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-        Call<FoodInsert> insertFoodCall = apiInterface.insertFoodResponse(typeBody, nameBody, priceBody, body);
-        insertFoodCall.enqueue(new Callback<FoodInsert>() {
+        MultipartBody.Part imageBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        Call<Insert> insertFoodCall = apiInterface.insertFoodResponse(typeBody, nameBody, priceBody, imageBody);
+        insertFoodCall.enqueue(new Callback<Insert>() {
             @Override
-            public void onResponse(@NonNull Call<FoodInsert> call, @NonNull Response<FoodInsert> response) {
+            public void onResponse(@NonNull Call<Insert> call, @NonNull Response<Insert> response) {
                 if(response.body() != null && response.isSuccessful() && response.body().isStatus()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddFoodActivity.this);
                     builder.setTitle("Sukses");
@@ -113,7 +113,7 @@ public class AddFoodActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<FoodInsert> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Insert> call, @NonNull Throwable t) {
                 Toast.makeText(AddFoodActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

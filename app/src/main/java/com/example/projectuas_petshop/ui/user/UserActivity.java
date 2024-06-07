@@ -1,16 +1,23 @@
 package com.example.projectuas_petshop.ui.user;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.databinding.ActivityUserBinding;
 import com.example.projectuas_petshop.ui.LoginActivity;
 import com.example.projectuas_petshop.ui.SessionManager;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
+import com.example.projectuas_petshop.ui.user.accessories.ListAccessoriesUserActivity;
 import com.example.projectuas_petshop.ui.user.food.ListFoodUserActivity;
 import com.example.projectuas_petshop.ui.user.pet.ListPetUserActivity;
+
+import java.util.HashMap;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -23,6 +30,15 @@ public class UserActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         sessionManager = new SessionManager(this);
+        HashMap<String, String> userDetail = sessionManager.getUserDetail();
+        String image = userDetail.get(SessionManager.IMAGE);
+        if (image != null && !image.isEmpty()) {
+            byte[] imageBytes = Base64.decode(image.substring(image.indexOf(",") + 1), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            binding.imgProfile.setImageBitmap(bitmap);
+        } else {
+            binding.imgProfile.setImageResource(R.drawable.account);
+        }
 
         binding.btnCats.setOnClickListener(v -> {
             Intent intent = new Intent(this, ListPetUserActivity.class);
@@ -72,17 +88,17 @@ public class UserActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        binding.accessories.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ListAccessoriesUserActivity.class);
+            startActivity(intent);
+        });
+
         binding.imgProfile.setOnClickListener(v -> {
-            sessionManager.logoutSession();
-            moveToLogin();
+            Intent intent = new Intent(this, ProfileUserActivity.class);
+            startActivity(intent);
         });
 
     }
 
-    private void moveToLogin() {
-        Intent intent = new Intent(UserActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-        finish();
-    }
+
 }

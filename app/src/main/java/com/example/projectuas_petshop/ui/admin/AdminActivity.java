@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.projectuas_petshop.databinding.ActivityAdminBinding;
 import com.example.projectuas_petshop.ui.LoginActivity;
 import com.example.projectuas_petshop.ui.SessionManager;
+import com.example.projectuas_petshop.ui.admin.accessories.ListAccessoriesAdminActivity;
 import com.example.projectuas_petshop.ui.admin.food.ListFoodAdminActivity;
 import com.example.projectuas_petshop.ui.admin.pet.ListPetAdminActivity;
 
@@ -33,6 +34,11 @@ public class AdminActivity extends AppCompatActivity {
 
         binding.btnMakanan.setOnClickListener(v -> {
             Intent intent = new Intent(this, ListFoodAdminActivity.class);
+            startActivity(intent);
+        });
+
+        binding.btnAksesoris.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ListAccessoriesAdminActivity.class);
             startActivity(intent);
         });
 

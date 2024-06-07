@@ -38,6 +38,7 @@ public class BuyFoodActivity extends AppCompatActivity {
         getData(id_food);
 
         binding.buttonBuy.setOnClickListener(v -> {
+            Toast.makeText(BuyFoodActivity.this, "Berhasil", Toast.LENGTH_SHORT).show();
         });
     }
 

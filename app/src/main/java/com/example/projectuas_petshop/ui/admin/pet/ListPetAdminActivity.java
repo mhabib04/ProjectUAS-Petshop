@@ -3,7 +3,6 @@ package com.example.projectuas_petshop.ui.admin.pet;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,13 +17,11 @@ import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityListPetAdminBinding;
-import com.example.projectuas_petshop.model.delete.deletePet.DeletePet;
+import com.example.projectuas_petshop.model.delete.Delete;
 import com.example.projectuas_petshop.model.select.selectPet.PetDataSelect;
 import com.example.projectuas_petshop.model.select.selectPet.PetSelect;
 import com.example.projectuas_petshop.model.adapter.AdapterListPetAdmin;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
-import com.example.projectuas_petshop.ui.user.pet.BuyPetActivity;
-import com.example.projectuas_petshop.ui.user.pet.ListPetUserActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -37,7 +34,6 @@ import retrofit2.Response;
 public class ListPetAdminActivity extends AppCompatActivity {
 
     private ActivityListPetAdminBinding binding;
-
     AdapterListPetAdmin adapterListPetAdmin;
     ApiInterface apiInterface;
 
@@ -71,8 +67,8 @@ public class ListPetAdminActivity extends AppCompatActivity {
 
     public void loadData() {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<PetSelect> call = apiInterface.getPetData();
-        call.enqueue(new Callback<PetSelect>() {
+        Call<PetSelect> petSelectCall = apiInterface.getPetData();
+        petSelectCall.enqueue(new Callback<PetSelect>() {
             @Override
             public void onResponse(Call<PetSelect> call, Response<PetSelect> response) {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
@@ -139,11 +135,10 @@ public class ListPetAdminActivity extends AppCompatActivity {
 
     private void deletePet(int id_pet) {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<DeletePet> call = apiInterface.deletePet(id_pet);
-
-        call.enqueue(new Callback<DeletePet>() {
+        Call<Delete> deletePetCall = apiInterface.deletePet(id_pet);
+        deletePetCall.enqueue(new Callback<Delete>() {
             @Override
-            public void onResponse(Call<DeletePet> call, Response<DeletePet> response) {
+            public void onResponse(Call<Delete> call, Response<Delete> response) {
                 if (response.isSuccessful()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListPetAdminActivity.this);
                     builder.setTitle("Sukses");
@@ -158,13 +153,13 @@ public class ListPetAdminActivity extends AppCompatActivity {
                     alertDialog.show();
                     loadData();
                 } else {
-                    Toast.makeText(ListPetAdminActivity.this, "Failed to delete pet: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListPetAdminActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<DeletePet> call, Throwable t) {
-                Toast.makeText(ListPetAdminActivity.this, "Failed to delete pet: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<Delete> call, Throwable t) {
+                Toast.makeText(ListPetAdminActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

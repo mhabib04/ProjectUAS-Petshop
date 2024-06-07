@@ -3,7 +3,6 @@ package com.example.projectuas_petshop.ui.admin.food;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +18,12 @@ import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityListFoodAdminBinding;
 import com.example.projectuas_petshop.model.adapter.AdapterListFoodAdmin;
-import com.example.projectuas_petshop.model.delete.deleteFood.DeleteFood;
+import com.example.projectuas_petshop.model.delete.Delete;
 import com.example.projectuas_petshop.model.select.selectFood.FoodSelect;
 import com.example.projectuas_petshop.model.select.selectFood.FoodDataSelect;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
+import com.example.projectuas_petshop.ui.admin.pet.EditPetActivity;
+import com.example.projectuas_petshop.ui.admin.pet.ListPetAdminActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ListFoodAdminActivity extends AppCompatActivity {
-
     private ActivityListFoodAdminBinding binding;
-
     AdapterListFoodAdmin adapterListFoodAdmin;
     ApiInterface apiInterface;
     @Override
@@ -66,13 +65,13 @@ public class ListFoodAdminActivity extends AppCompatActivity {
 
     public void loadData() {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<FoodSelect> call = apiInterface.getFoodData();
-        call.enqueue(new Callback<FoodSelect>() {
+        Call<FoodSelect> foodSelectCall = apiInterface.getFoodData();
+        foodSelectCall.enqueue(new Callback<FoodSelect>() {
             @Override
             public void onResponse(Call<FoodSelect> call, Response<FoodSelect> response) {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
-                    FoodSelect pet = response.body();
-                    List<FoodDataSelect> dataList = pet.getData();
+                    FoodSelect food = response.body();
+                    List<FoodDataSelect> dataList = food.getData();
 
                     adapterListFoodAdmin = new AdapterListFoodAdmin(getApplicationContext(), (ArrayList<FoodDataSelect>) dataList);
                     binding.listFoodAdmin.setAdapter(adapterListFoodAdmin);
@@ -121,6 +120,10 @@ public class ListFoodAdminActivity extends AppCompatActivity {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
+                } else if (item.getItemId() == R.id.edit) {
+                    Intent intent = new Intent(ListFoodAdminActivity.this, EditFoodActivity.class);
+                    intent.putExtra("id_food", id_food);
+                    startActivity(intent);
                 }
                 return false;
             }
@@ -129,11 +132,11 @@ public class ListFoodAdminActivity extends AppCompatActivity {
 
     private void deleteFood(int id_food) {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<DeleteFood> call = apiInterface.deleteFood(id_food);
+        Call<Delete> deleteFoodCall = apiInterface.deleteFood(id_food);
 
-        call.enqueue(new Callback<DeleteFood>() {
+        deleteFoodCall.enqueue(new Callback<Delete>() {
             @Override
-            public void onResponse(Call<DeleteFood> call, Response<DeleteFood> response) {
+            public void onResponse(Call<Delete> call, Response<Delete> response) {
                 if (response.isSuccessful()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListFoodAdminActivity.this);
                     builder.setTitle("Sukses");
@@ -147,13 +150,13 @@ public class ListFoodAdminActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();loadData();
                 } else {
-                    Toast.makeText(ListFoodAdminActivity.this, "Failed to delete food: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListFoodAdminActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<DeleteFood> call, Throwable t) {
-                Toast.makeText(ListFoodAdminActivity.this, "Failed to delete food: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<Delete> call, Throwable t) {
+                Toast.makeText(ListFoodAdminActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -163,12 +166,12 @@ public class ListFoodAdminActivity extends AppCompatActivity {
         Intent intent = new Intent(ListFoodAdminActivity.this, AdminActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
-        super.onBackPressed(); // Call the super method
+        super.onBackPressed();
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed(); // Calls the onBackPressed method
-        return true; // Return true to indicate that the navigation up action was handled
+        onBackPressed();
+        return true;
     }
 }

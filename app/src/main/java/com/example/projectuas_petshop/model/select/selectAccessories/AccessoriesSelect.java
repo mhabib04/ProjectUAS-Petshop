@@ -10,6 +10,16 @@ public class AccessoriesSelect{
 
 	@SerializedName("status")
 	private boolean status;
+	@SerializedName("message")
+	private String message;
+	public void setMessage(String message){
+		this.message = message;
+	}
+
+	public String getMessage(){
+		return message;
+	}
+
 
 	public List<AccessoriesDataSelect> getData(){
 		return data;

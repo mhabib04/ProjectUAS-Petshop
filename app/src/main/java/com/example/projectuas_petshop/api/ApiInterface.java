@@ -1,11 +1,11 @@
 package com.example.projectuas_petshop.api;
 
-import com.example.projectuas_petshop.model.delete.deleteFood.DeleteFood;
-import com.example.projectuas_petshop.model.delete.deletePet.DeletePet;
-import com.example.projectuas_petshop.model.insert.insertFood.FoodInsert;
-import com.example.projectuas_petshop.model.insert.insertPet.PetInsert;
+import com.example.projectuas_petshop.model.delete.Delete;
+import com.example.projectuas_petshop.model.insert.Insert;
+import com.example.projectuas_petshop.model.select.getAccessories.GetAccessories;
 import com.example.projectuas_petshop.model.select.getFood.GetFood;
 import com.example.projectuas_petshop.model.select.getPet.GetPet;
+import com.example.projectuas_petshop.model.select.selectAccessories.AccessoriesSelect;
 import com.example.projectuas_petshop.model.select.selectFood.FoodSelect;
 import com.example.projectuas_petshop.model.select.selectFoodByType.FoodSelectByType;
 import com.example.projectuas_petshop.model.select.selectPet.PetSelect;
@@ -33,33 +33,47 @@ public interface ApiInterface {
             @Field("password") String password
     );
 
-    @FormUrlEncoded
+    @Multipart
     @POST("register.php")
     Call<Register> registerResponse(
-            @Field("username") String username,
-            @Field("password") String password,
-            @Field("name") String name,
-            @Field("role") String role
+            @Part("username") RequestBody username,
+            @Part("password") RequestBody password,
+            @Part("name") RequestBody name,
+            @Part("role") RequestBody role,
+            @Part MultipartBody.Part image
     );
 
     @GET("selectPet.php")
     Call<PetSelect> getPetData();
+
     @GET("selectFood.php")
     Call<FoodSelect> getFoodData();
 
+    @GET("selectAccessories.php")
+    Call<AccessoriesSelect> getAccessoriesData();
+
     @Multipart
     @POST("insertPet.php")
-    Call<PetInsert> insertPetResponse(
+    Call<Insert> insertPetResponse(
             @Part("type") RequestBody type,
             @Part("breed") RequestBody breed,
             @Part("price") RequestBody price,
             @Part("age") RequestBody age,
             @Part MultipartBody.Part image
     );
+
     @Multipart
     @POST("insertFood.php")
-    Call<FoodInsert> insertFoodResponse(
+    Call<Insert> insertFoodResponse(
             @Part("type") RequestBody type,
+            @Part("name") RequestBody name,
+            @Part("price") RequestBody price,
+            @Part MultipartBody.Part image
+    );
+
+    @Multipart
+    @POST("insertAccessories.php")
+    Call<Insert> insertAccessoriesResponse(
             @Part("name") RequestBody name,
             @Part("price") RequestBody price,
             @Part MultipartBody.Part image
@@ -67,16 +81,22 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("deletePet.php")
-    Call<DeletePet> deletePet(@Field("id_pet") int id_pet);
+    Call<Delete> deletePet(@Field("id_pet") int id_pet);
+
     @FormUrlEncoded
     @POST("deleteFood.php")
-    Call<DeleteFood> deleteFood(@Field("id_food") int id_food);
+    Call<Delete> deleteFood(@Field("id_food") int id_food);
+
+    @FormUrlEncoded
+    @POST("deleteAccessories.php")
+    Call<Delete> deleteAccessories(@Field("id_accessories") int id_accessories);
 
     @FormUrlEncoded
     @POST("selectPetByType.php")
     Call<PetSelectByType> petSelectByType(
             @Field("type") String type
     );
+
     @FormUrlEncoded
     @POST("selectFoodByType.php")
     Call<FoodSelectByType> foodSelectByType(
@@ -88,10 +108,17 @@ public interface ApiInterface {
     Call<GetPet> getPet(
             @Field("id_pet") int id_pet
     );
+
     @FormUrlEncoded
     @POST("getFood.php")
     Call<GetFood> getFood(
             @Field("id_food") int id_food
+    );
+
+    @FormUrlEncoded
+    @POST("getAccessories.php")
+    Call<GetAccessories> getAccessories(
+            @Field("id_accessories") int id_accessories
     );
 
     @Multipart
@@ -104,4 +131,24 @@ public interface ApiInterface {
             @Part("age") RequestBody age,
             @Part MultipartBody.Part image
     );
+
+    @Multipart
+    @POST("updateFood.php")
+    Call<Update> updateFood(
+            @Part("id_food") RequestBody idFood,
+            @Part("type") RequestBody type,
+            @Part("name") RequestBody name,
+            @Part("price") RequestBody price,
+            @Part MultipartBody.Part image
+    );
+
+    @Multipart
+    @POST("updateAccessories.php")
+    Call<Update> updateAccessories(
+            @Part("id_accessories") RequestBody idAccessories,
+            @Part("name") RequestBody name,
+            @Part("price") RequestBody price,
+            @Part MultipartBody.Part image
+    );
+
 }

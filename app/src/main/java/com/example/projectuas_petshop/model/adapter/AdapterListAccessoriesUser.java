@@ -19,13 +19,13 @@ import com.example.projectuas_petshop.model.select.selectAccessories.Accessories
 
 import java.util.ArrayList;
 
-public class AdapterListAccessoriesAdmin extends RecyclerView.Adapter<AdapterListAccessoriesAdmin.ViewHolder> {
+public class AdapterListAccessoriesUser extends RecyclerView.Adapter<AdapterListAccessoriesUser.ViewHolder> {
     private Context context;
     private ArrayList<AccessoriesDataSelect> model;
     private LayoutInflater inflater;
     private OnItemClickListener onItemClickListener;
 
-    public AdapterListAccessoriesAdmin(Context context, ArrayList<AccessoriesDataSelect> model) {
+    public AdapterListAccessoriesUser(Context context, ArrayList<AccessoriesDataSelect> model) {
         this.context = context;
         this.model = model;
         this.inflater = LayoutInflater.from(context);
@@ -34,7 +34,7 @@ public class AdapterListAccessoriesAdmin extends RecyclerView.Adapter<AdapterLis
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_accessories_admin, parent, false);
+        View view = inflater.inflate(R.layout.list_accessories_user, parent, false);
         return new ViewHolder(view);
     }
 
@@ -42,7 +42,6 @@ public class AdapterListAccessoriesAdmin extends RecyclerView.Adapter<AdapterLis
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         AccessoriesDataSelect data = model.get(position);
         holder.name.setText(data.getName());
-        holder.price.setText(String.valueOf(data.getPrice()));
         byte[] imageBytes = Base64.decode(data.getImage().substring(data.getImage().indexOf(",") + 1), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         holder.imgAccessories.setImageBitmap(bitmap);
@@ -71,14 +70,13 @@ public class AdapterListAccessoriesAdmin extends RecyclerView.Adapter<AdapterLis
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name, price;
+        TextView name;
         ImageView imgAccessories;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.txtNameAccessories);
-            price = itemView.findViewById(R.id.txtPriceAccessories);
-            imgAccessories = itemView.findViewById(R.id.imgAccessories);
+            name = itemView.findViewById(R.id.txtAccessoriesUser);
+            imgAccessories = itemView.findViewById(R.id.imgAccessoriesUser);
         }
     }
 }

@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
-            app:simpleItems="@array/option_food"/>
+            app:simpleItems="@array/option_pet"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +93,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imgUploadPet"
+        android:id="@+id/imgUploadFood"
         android:layout_gravity="center"
         android:layout_width="250dp"
         android:layout_height="200dp"

@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityAddPetBinding;
-import com.example.projectuas_petshop.model.insert.insertPet.PetInsert;
+import com.example.projectuas_petshop.model.insert.Insert;
 import com.example.projectuas_petshop.ui.admin.FileUtils;
 
 import java.io.File;
@@ -95,10 +95,10 @@ public class AddPetActivity extends AppCompatActivity {
         RequestBody ageBody = RequestBody.create(String.valueOf(age), MediaType.parse("text/plain"));
         RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/jpeg"));
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-        Call<PetInsert> insertAnimalCall = apiInterface.insertPetResponse(typeBody,breedBody, priceBody, ageBody, body);
-        insertAnimalCall.enqueue(new Callback<PetInsert>() {
+        Call<Insert> insertPetCall = apiInterface.insertPetResponse(typeBody,breedBody, priceBody, ageBody, body);
+        insertPetCall.enqueue(new Callback<Insert>() {
             @Override
-            public void onResponse(@NonNull Call<PetInsert> call, @NonNull Response<PetInsert> response) {
+            public void onResponse(@NonNull Call<Insert> call, @NonNull Response<Insert> response) {
                 if(response.body() != null && response.isSuccessful() && response.body().isStatus()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddPetActivity.this);
                     builder.setTitle("Sukses");
@@ -117,7 +117,7 @@ public class AddPetActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<PetInsert> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Insert> call, @NonNull Throwable t) {
                 Toast.makeText(AddPetActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

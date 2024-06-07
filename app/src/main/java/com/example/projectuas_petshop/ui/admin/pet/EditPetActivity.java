@@ -43,7 +43,7 @@ public class EditPetActivity extends AppCompatActivity {
     private ActivityEditPetBinding binding;
     ApiInterface apiInterface;
     private Uri imageUri;
-    private boolean imageChanged = false;  // Flag to track if the image has been changed
+    private boolean imageChanged = false;
     int id_pet;
 
     @Override
@@ -120,8 +120,8 @@ public class EditPetActivity extends AppCompatActivity {
 
     public void getData(int id_pet) {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<GetPet> call = apiInterface.getPet(id_pet);
-        call.enqueue(new Callback<GetPet>() {
+        Call<GetPet> getPetCall = apiInterface.getPet(id_pet);
+        getPetCall.enqueue(new Callback<GetPet>() {
             @Override
             @SuppressLint({"SetTextI18n", "ResourceType"})
             public void onResponse(Call<GetPet> call, Response<GetPet> response) {
@@ -167,8 +167,8 @@ public class EditPetActivity extends AppCompatActivity {
         RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/jpeg"));
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<Update> updatePet = apiInterface.updatePet(idPetBody, typeBody, breedBody, priceBody, ageBody, body);
-        updatePet.enqueue(new Callback<Update>() {
+        Call<Update> updatePetCall = apiInterface.updatePet(idPetBody, typeBody, breedBody, priceBody, ageBody, body);
+        updatePetCall.enqueue(new Callback<Update>() {
             @Override
             public void onResponse(@NonNull Call<Update> call, @NonNull Response<Update> response) {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
@@ -183,10 +183,8 @@ public class EditPetActivity extends AppCompatActivity {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                } else if (response.body() != null) {
-                    Toast.makeText(EditPetActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(EditPetActivity.this, "Response tidak valid", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPetActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
