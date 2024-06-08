@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,12 +21,8 @@ import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityEditAccessoriesBinding;
 import com.example.projectuas_petshop.model.select.getAccessories.GetAccessories;
 import com.example.projectuas_petshop.model.select.getAccessories.GetAccessoriesData;
-import com.example.projectuas_petshop.model.select.getFood.GetFood;
-import com.example.projectuas_petshop.model.select.getFood.GetFoodData;
 import com.example.projectuas_petshop.model.update.Update;
 import com.example.projectuas_petshop.ui.admin.FileUtils;
-import com.example.projectuas_petshop.ui.admin.food.EditFoodActivity;
-import com.example.projectuas_petshop.ui.admin.pet.ListPetAdminActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,16 +51,20 @@ public class EditAccessoriesActivity extends AppCompatActivity {
         id_accessories = getIntent().getIntExtra("id_accessories", 0);
         getData(id_accessories);
 
-        binding.btnUpload.setOnClickListener(v -> {
+        setSupportActionBar(binding.toolbarEditAccessoriesAdmin);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        binding.btnSelectImageAccessories.setOnClickListener(v -> {
             openFileChooser();
         });
 
-        binding.btnUpdate.setOnClickListener(v -> {
-            String name = binding.etName.getText().toString().trim();
-            String priceString = binding.etPrice.getText().toString().trim();
+        binding.btnUpdateAccessories.setOnClickListener(v -> {
+            String name = binding.etNameAccessories.getText().toString().trim();
+            String priceString = binding.etPriceAccessories.getText().toString().trim();
 
             if (name.isEmpty() || priceString.isEmpty()) {
-                Toast.makeText(EditAccessoriesActivity.this, "Selesaikan pengisian", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditAccessoriesActivity.this, getString(R.string.please_fill_in_all_field_completely), Toast.LENGTH_SHORT).show();
             } else {
                 int price = Integer.parseInt(priceString);
 
@@ -85,7 +84,7 @@ public class EditAccessoriesActivity extends AppCompatActivity {
 
                     updateAccessories(id_accessories, name, price, Uri.fromFile(file));
                 } else {
-                    Toast.makeText(EditAccessoriesActivity.this, "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAccessoriesActivity.this, getString(R.string.select_image_first), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -120,14 +119,14 @@ public class EditAccessoriesActivity extends AppCompatActivity {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     GetAccessories getAccessories = response.body();
                     List<GetAccessoriesData> data = getAccessories.getData();
-                    binding.etName.setText(data.get(0).getName());
+                    binding.etNameAccessories.setText(data.get(0).getName());
                     byte[] imageBytes = Base64.decode(data.get(0).getImage().substring(data.get(0).getImage().indexOf(",") + 1), Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                     binding.imgUploadAccessories.setImageBitmap(bitmap);
                     String price = String.valueOf(data.get(0).getPrice());
-                    binding.etPrice.setText(price);
+                    binding.etPriceAccessories.setText(price);
                 } else {
-                    Toast.makeText(EditAccessoriesActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAccessoriesActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -143,7 +142,7 @@ public class EditAccessoriesActivity extends AppCompatActivity {
         String filePath = FileUtils.getPath(this, imageUri);
 
         if (filePath == null) {
-            Toast.makeText(this, "Gagal mendapatkan path dari URI", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.failded_to_get_the_path_of_the_uri), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -152,16 +151,16 @@ public class EditAccessoriesActivity extends AppCompatActivity {
         RequestBody nameBody = RequestBody.create(name, MediaType.parse("text/plain"));
         RequestBody priceBody = RequestBody.create(String.valueOf(price), MediaType.parse("text/plain"));
         RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/jpeg"));
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        MultipartBody.Part imageBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<Update> updateAccessories = apiInterface.updateAccessories(idAccessoriesBody, nameBody, priceBody, body);
+        Call<Update> updateAccessories = apiInterface.updateAccessories(idAccessoriesBody, nameBody, priceBody, imageBody);
         updateAccessories.enqueue(new Callback<Update>() {
             @Override
             public void onResponse(@NonNull Call<Update> call, @NonNull Response<Update> response) {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditAccessoriesActivity.this);
-                    builder.setTitle("Sukses");
-                    builder.setMessage("Data Berhasil Diupdate");
+                    builder.setTitle(getString(R.string.success));
+                    builder.setMessage(getString(R.string.data_updated_successfully));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -171,7 +170,7 @@ public class EditAccessoriesActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 } else {
-                    Toast.makeText(EditAccessoriesActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAccessoriesActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -182,11 +181,15 @@ public class EditAccessoriesActivity extends AppCompatActivity {
         });
     }
 
-
     private void moveToList() {
         Intent intent = new Intent(EditAccessoriesActivity.this, ListAccessoriesAdminActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         finish();
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

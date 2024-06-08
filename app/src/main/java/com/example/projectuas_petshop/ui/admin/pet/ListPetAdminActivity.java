@@ -32,11 +32,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ListPetAdminActivity extends AppCompatActivity {
-
     private ActivityListPetAdminBinding binding;
     AdapterListPetAdmin adapterListPetAdmin;
     ApiInterface apiInterface;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,15 +50,9 @@ public class ListPetAdminActivity extends AppCompatActivity {
 
         loadData();
 
-        binding.fabPet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAnchorView(R.id.fab)
-//                        .setAction("Action", null).show();
-                Intent intent = new Intent(ListPetAdminActivity.this, AddPetActivity.class);
-                startActivity(intent);
-            }
+        binding.fabPet.setOnClickListener(v -> {
+            Intent intent = new Intent(ListPetAdminActivity.this, AddPetActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -84,7 +76,7 @@ public class ListPetAdminActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Snackbar.make(findViewById(android.R.id.content), "Data Kosong", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.empty_data), Snackbar.LENGTH_SHORT).show();
                 }
             }
 
@@ -94,7 +86,6 @@ public class ListPetAdminActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void showPopupMenu(View view, int position, int id_pet) {
         PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
@@ -107,15 +98,15 @@ public class ListPetAdminActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.hapus) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListPetAdminActivity.this);
-                    builder.setTitle("Apakah Ingin Menghapus Data?");
-                    builder.setNegativeButton("Ya", new DialogInterface.OnClickListener() {
+                    builder.setTitle(getString(R.string.delete_data));
+                    builder.setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deletePet(id_pet);
                             loadData();
                         }
                     });
-                    builder.setPositiveButton("Tidak", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -141,8 +132,8 @@ public class ListPetAdminActivity extends AppCompatActivity {
             public void onResponse(Call<Delete> call, Response<Delete> response) {
                 if (response.isSuccessful()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListPetAdminActivity.this);
-                    builder.setTitle("Sukses");
-                    builder.setMessage("Data Berhasil Dihapus");
+                    builder.setTitle(getString(R.string.success));
+                    builder.setMessage(getString(R.string.data_deleted_successfully));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -153,7 +144,7 @@ public class ListPetAdminActivity extends AppCompatActivity {
                     alertDialog.show();
                     loadData();
                 } else {
-                    Toast.makeText(ListPetAdminActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListPetAdminActivity.this, getString(R.string.failed_to_delete_data), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -163,7 +154,6 @@ public class ListPetAdminActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     public void onBackPressed() {

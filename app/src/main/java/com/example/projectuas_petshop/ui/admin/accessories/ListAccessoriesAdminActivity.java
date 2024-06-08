@@ -22,8 +22,6 @@ import com.example.projectuas_petshop.model.delete.Delete;
 import com.example.projectuas_petshop.model.select.selectAccessories.AccessoriesDataSelect;
 import com.example.projectuas_petshop.model.select.selectAccessories.AccessoriesSelect;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
-import com.example.projectuas_petshop.ui.admin.food.EditFoodActivity;
-import com.example.projectuas_petshop.ui.admin.food.ListFoodAdminActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ListAccessoriesAdminActivity extends AppCompatActivity {
-
     private ActivityListAccessoriesAdminBinding binding;
     AdapterListAccessoriesAdmin adapterListAccessoriesAdmin;
     ApiInterface apiInterface;
@@ -51,15 +48,9 @@ public class ListAccessoriesAdminActivity extends AppCompatActivity {
 
         loadData();
 
-        binding.fabAccessories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAnchorView(R.id.fab)
-//                        .setAction("Action", null).show();
-                Intent intent = new Intent(ListAccessoriesAdminActivity.this, AddAccessoriesActivity.class);
-                startActivity(intent);
-            }
+        binding.fabAccessories.setOnClickListener(v -> {
+            Intent intent = new Intent(ListAccessoriesAdminActivity.this, AddAccessoriesActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -82,7 +73,7 @@ public class ListAccessoriesAdminActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ListAccessoriesAdminActivity.this, "Data kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListAccessoriesAdminActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -103,14 +94,15 @@ public class ListAccessoriesAdminActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.hapus) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListAccessoriesAdminActivity.this);
-                    builder.setTitle("Apakah Ingin Menghapus Data?");
-                    builder.setNegativeButton("Ya", new DialogInterface.OnClickListener() {
+                    builder.setTitle(getString(R.string.delete_data));
+                    builder.setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deleteAccessories(id_accessories);
+                            loadData();
                         }
                     });
-                    builder.setPositiveButton("Tidak", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -137,8 +129,8 @@ public class ListAccessoriesAdminActivity extends AppCompatActivity {
             public void onResponse(Call<Delete> call, Response<Delete> response) {
                 if (response.isSuccessful()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListAccessoriesAdminActivity.this);
-                    builder.setTitle("Sukses");
-                    builder.setMessage("Data Berhasil Dihapus");
+                    builder.setTitle(getString(R.string.success));
+                    builder.setMessage(getString(R.string.data_deleted_successfully));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -148,7 +140,7 @@ public class ListAccessoriesAdminActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();loadData();
                 } else {
-                    Toast.makeText(ListAccessoriesAdminActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListAccessoriesAdminActivity.this, getString(R.string.failed_to_delete_data), Toast.LENGTH_SHORT).show();
                 }
             }
 

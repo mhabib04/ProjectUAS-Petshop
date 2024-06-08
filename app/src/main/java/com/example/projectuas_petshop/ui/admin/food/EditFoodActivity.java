@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -25,8 +24,6 @@ import com.example.projectuas_petshop.model.select.getFood.GetFood;
 import com.example.projectuas_petshop.model.select.getFood.GetFoodData;
 import com.example.projectuas_petshop.model.update.Update;
 import com.example.projectuas_petshop.ui.admin.FileUtils;
-import com.example.projectuas_petshop.ui.admin.pet.EditPetActivity;
-import com.example.projectuas_petshop.ui.admin.pet.ListPetAdminActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,20 +51,20 @@ public class EditFoodActivity extends AppCompatActivity {
 
         id_food = getIntent().getIntExtra("id_food", 0);
         getData(id_food);
-        binding.btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
-        });
 
-        binding.btnUpdate.setOnClickListener(v -> {
-            String selectType = binding.autoCompleteText.getText().toString().trim();
-            String name = binding.etName.getText().toString().trim();
-            String priceString = binding.etPrice.getText().toString().trim();
+        setSupportActionBar(binding.toolbarEditFoodAdmin);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        binding.btnSelectImageFood.setOnClickListener(v -> openFileChooser());
+
+        binding.btnUpdateFood.setOnClickListener(v -> {
+            String selectType = binding.optionTypeFood.getText().toString().trim();
+            String name = binding.etNameFood.getText().toString().trim();
+            String priceString = binding.etPriceFood.getText().toString().trim();
 
             if (selectType.isEmpty() || name.isEmpty() || priceString.isEmpty()) {
-                Toast.makeText(EditFoodActivity.this, "Selesaikan pengisian", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditFoodActivity.this, getString(R.string.please_fill_in_all_field_completely), Toast.LENGTH_SHORT).show();
             } else {
                 int price = Integer.parseInt(priceString);
 
@@ -87,14 +84,14 @@ public class EditFoodActivity extends AppCompatActivity {
 
                     updateFood(id_food, selectType, name, price, Uri.fromFile(file));
                 } else {
-                    Toast.makeText(EditFoodActivity.this, "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditFoodActivity.this, getString(R.string.select_image_first), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.option_pet, android.R.layout.simple_dropdown_item_1line);
-        binding.autoCompleteText.setAdapter(adapter);
+                R.array.option_types, android.R.layout.simple_dropdown_item_1line);
+        binding.optionTypeFood.setAdapter(adapter);
     }
 
     private void openFileChooser() {
@@ -125,15 +122,15 @@ public class EditFoodActivity extends AppCompatActivity {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     GetFood getFood = response.body();
                     List<GetFoodData> data = getFood.getData();
-                    binding.autoCompleteText.setText(data.get(0).getType(), false);
-                    binding.etName.setText(data.get(0).getName());
+                    binding.optionTypeFood.setText(data.get(0).getType(), false);
+                    binding.etNameFood.setText(data.get(0).getName());
                     byte[] imageBytes = Base64.decode(data.get(0).getImage().substring(data.get(0).getImage().indexOf(",") + 1), Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                     binding.imgUploadFood.setImageBitmap(bitmap);
                     String price = String.valueOf(data.get(0).getPrice());
-                    binding.etPrice.setText(price);
+                    binding.etPriceFood.setText(price);
                 } else {
-                    Toast.makeText(EditFoodActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditFoodActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -149,7 +146,7 @@ public class EditFoodActivity extends AppCompatActivity {
         String filePath = FileUtils.getPath(this, imageUri);
 
         if (filePath == null) {
-            Toast.makeText(this, "Gagal mendapatkan path dari URI", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.failded_to_get_the_path_of_the_uri), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -159,16 +156,16 @@ public class EditFoodActivity extends AppCompatActivity {
         RequestBody nameBody = RequestBody.create(name, MediaType.parse("text/plain"));
         RequestBody priceBody = RequestBody.create(String.valueOf(price), MediaType.parse("text/plain"));
         RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/jpeg"));
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        MultipartBody.Part imageBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<Update> updateFoodCall = apiInterface.updateFood(idFoodBody, typeBody, nameBody, priceBody, body);
+        Call<Update> updateFoodCall = apiInterface.updateFood(idFoodBody, typeBody, nameBody, priceBody, imageBody);
         updateFoodCall.enqueue(new Callback<Update>() {
             @Override
             public void onResponse(@NonNull Call<Update> call, @NonNull Response<Update> response) {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditFoodActivity.this);
-                    builder.setTitle("Sukses");
-                    builder.setMessage("Data Berhasil Diupdate");
+                    builder.setTitle(getString(R.string.success));
+                    builder.setMessage(getString(R.string.data_updated_successfully));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -178,7 +175,7 @@ public class EditFoodActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 } else {
-                    Toast.makeText(EditFoodActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditFoodActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -189,11 +186,16 @@ public class EditFoodActivity extends AppCompatActivity {
         });
     }
 
-
     private void moveToList() {
         Intent intent = new Intent(EditFoodActivity.this, ListFoodAdminActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

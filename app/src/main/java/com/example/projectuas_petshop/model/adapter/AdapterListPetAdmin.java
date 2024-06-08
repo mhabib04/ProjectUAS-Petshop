@@ -17,10 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.model.select.selectPet.PetDataSelect;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmin.ViewHolder> {
-
     private Context context;
     private ArrayList<PetDataSelect> model;
     private LayoutInflater inflater;
@@ -39,16 +40,20 @@ public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmi
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PetDataSelect data = model.get(position);
-        holder.type.setText(data.getType());
-        holder.breed.setText(data.getBreed());
-        holder.price.setText(String.valueOf(data.getPrice()));
-        holder.age.setText(String.valueOf(data.getAge()));
+        holder.typePet.setText(data.getType());
+        holder.breedPet.setText(data.getBreed());
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        int price = data.getPrice();
+        holder.pricePet.setText(formatRupiah.format((double)price));
+        holder.agePet.setText(data.getAge() + " " + context.getResources().getString(R.string.month));
         byte[] imageBytes = Base64.decode(data.getImage().substring(data.getImage().indexOf(",") + 1), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        holder.img_pet.setImageBitmap(bitmap);
+        holder.imagePet.setImageBitmap(bitmap);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,16 +79,16 @@ public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView type, breed, price, age;
-        ImageView img_pet;
+        TextView typePet, breedPet, pricePet, agePet;
+        ImageView imagePet;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            type = itemView.findViewById(R.id.txtTypePet);
-            breed = itemView.findViewById(R.id.txtBreedPet);
-            price = itemView.findViewById(R.id.txtPricePet);
-            age = itemView.findViewById(R.id.txtAgePet);
-            img_pet = itemView.findViewById(R.id.imgPet);
+            typePet = itemView.findViewById(R.id.txtTypePetAdmin);
+            breedPet = itemView.findViewById(R.id.txtBreedPetAdmin);
+            pricePet = itemView.findViewById(R.id.txtPricePetAdmin);
+            agePet = itemView.findViewById(R.id.txtAgePetAdmin);
+            imagePet = itemView.findViewById(R.id.imgPetAdmin);
         }
     }
 }

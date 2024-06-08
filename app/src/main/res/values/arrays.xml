@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="option_pet">
-        <item>Cat</item>
-        <item>Dog</item>
-        <item>Bird</item>
-        <item>Fish</item>
-    </string-array>
-    <string-array name="option_food">
-        <item>Dry</item>
-        <item>Wet</item>
-        <item>Normal</item>
+    <string-array name="option_types">
+        <item>@string/cat</item>
+        <item>@string/dog</item>
+        <item>@string/bird</item>
+        <item>@string/fish</item>
     </string-array>
 </resources>

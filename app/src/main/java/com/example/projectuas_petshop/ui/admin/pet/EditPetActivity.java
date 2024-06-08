@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -39,13 +38,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditPetActivity extends AppCompatActivity {
-
     private ActivityEditPetBinding binding;
     ApiInterface apiInterface;
     private Uri imageUri;
     private boolean imageChanged = false;
     int id_pet;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,21 +52,20 @@ public class EditPetActivity extends AppCompatActivity {
         id_pet = getIntent().getIntExtra("id_pet", 0);
         getData(id_pet);
 
-        binding.btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
-        });
+        setSupportActionBar(binding.toolbarEditPetAdmin);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        binding.btnUpdate.setOnClickListener(v -> {
-            String selectType = binding.autoCompleteText.getText().toString().trim();
-            String breed = binding.etBreed.getText().toString().trim();
-            String priceString = binding.etPrice.getText().toString().trim();
-            String ageString = binding.etAge.getText().toString().trim();
+        binding.btnSelectImagePet.setOnClickListener(v -> openFileChooser());
+
+        binding.btnUpdatePet.setOnClickListener(v -> {
+            String selectType = binding.optionTypePet.getText().toString().trim();
+            String breed = binding.etBreedPet.getText().toString().trim();
+            String priceString = binding.etPricePet.getText().toString().trim();
+            String ageString = binding.etAgePet.getText().toString().trim();
 
             if (selectType.isEmpty() || breed.isEmpty() || priceString.isEmpty() || ageString.isEmpty()) {
-                Toast.makeText(EditPetActivity.this, "Selesaikan pengisian", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPetActivity.this, getString(R.string.please_fill_in_all_field_completely), Toast.LENGTH_SHORT).show();
             } else {
                 int price = Integer.parseInt(priceString);
                 int age = Integer.parseInt(ageString);
@@ -90,14 +86,14 @@ public class EditPetActivity extends AppCompatActivity {
 
                     updatePet(id_pet, selectType, breed, price, age, Uri.fromFile(file));
                 } else {
-                    Toast.makeText(EditPetActivity.this, "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPetActivity.this, getString(R.string.select_image_first), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.option_pet, android.R.layout.simple_dropdown_item_1line);
-        binding.autoCompleteText.setAdapter(adapter);
+                R.array.option_types, android.R.layout.simple_dropdown_item_1line);
+        binding.optionTypePet.setAdapter(adapter);
     }
 
     private void openFileChooser() {
@@ -128,17 +124,17 @@ public class EditPetActivity extends AppCompatActivity {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     GetPet getPet = response.body();
                     List<GetPetData> data = getPet.getData();
-                    binding.autoCompleteText.setText(data.get(0).getType(), false);
-                    binding.etBreed.setText(data.get(0).getBreed());
+                    binding.optionTypePet.setText(data.get(0).getType(), false);
+                    binding.etBreedPet.setText(data.get(0).getBreed());
                     byte[] imageBytes = Base64.decode(data.get(0).getImage().substring(data.get(0).getImage().indexOf(",") + 1), Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                     binding.imgUploadPet.setImageBitmap(bitmap);
                     String price = String.valueOf(data.get(0).getPrice());
                     String age = String.valueOf(data.get(0).getAge());
-                    binding.etPrice.setText(price);
-                    binding.etAge.setText(age);
+                    binding.etPricePet.setText(price);
+                    binding.etAgePet.setText(age);
                 } else {
-                    Toast.makeText(EditPetActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPetActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -154,7 +150,7 @@ public class EditPetActivity extends AppCompatActivity {
         String filePath = FileUtils.getPath(this, imageUri);
 
         if (filePath == null) {
-            Toast.makeText(this, "Gagal mendapatkan path dari URI", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.failded_to_get_the_path_of_the_uri), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -165,16 +161,16 @@ public class EditPetActivity extends AppCompatActivity {
         RequestBody priceBody = RequestBody.create(String.valueOf(price), MediaType.parse("text/plain"));
         RequestBody ageBody = RequestBody.create(String.valueOf(age), MediaType.parse("text/plain"));
         RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/jpeg"));
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        MultipartBody.Part imageBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<Update> updatePetCall = apiInterface.updatePet(idPetBody, typeBody, breedBody, priceBody, ageBody, body);
+        Call<Update> updatePetCall = apiInterface.updatePet(idPetBody, typeBody, breedBody, priceBody, ageBody, imageBody);
         updatePetCall.enqueue(new Callback<Update>() {
             @Override
             public void onResponse(@NonNull Call<Update> call, @NonNull Response<Update> response) {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditPetActivity.this);
-                    builder.setTitle("Sukses");
-                    builder.setMessage("Data Berhasil Diupdate");
+                    builder.setTitle(getString(R.string.success));
+                    builder.setMessage(getString(R.string.data_updated_successfully));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -184,7 +180,7 @@ public class EditPetActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 } else {
-                    Toast.makeText(EditPetActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPetActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -195,11 +191,16 @@ public class EditPetActivity extends AppCompatActivity {
         });
     }
 
-
     private void moveToList() {
         Intent intent = new Intent(EditPetActivity.this, ListPetAdminActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

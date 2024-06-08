@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.model.select.selectFood.FoodDataSelect;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAdmin.ViewHolder> {
 
@@ -42,13 +44,15 @@ public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         FoodDataSelect data = model.get(position);
-        holder.id_food.setText(String.valueOf(data.getIdFood()));
-        holder.type.setText(data.getType());
-        holder.name.setText(data.getName());
-        holder.price.setText(String.valueOf(data.getPrice()));
+        holder.typeFood.setText(data.getType());
+        holder.nameFood.setText(data.getName());
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        int price = data.getPrice();
+        holder.priceFood.setText(formatRupiah.format((double)price));
         byte[] imageBytes = Base64.decode(data.getImage().substring(data.getImage().indexOf(",") + 1), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        holder.imgFood.setImageBitmap(bitmap);
+        holder.imageFood.setImageBitmap(bitmap);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,16 +78,15 @@ public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView id_food, type, name, price;
-        ImageView imgFood;
+        TextView typeFood, nameFood, priceFood;
+        ImageView imageFood;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            id_food = itemView.findViewById(R.id.txtIdFood);
-            type = itemView.findViewById(R.id.txtTypeFood);
-            name = itemView.findViewById(R.id.txtNameFood);
-            price = itemView.findViewById(R.id.txtPriceFood);
-            imgFood = itemView.findViewById(R.id.imgFood);
+            typeFood = itemView.findViewById(R.id.txtTypeFoodAdmin);
+            nameFood = itemView.findViewById(R.id.txtNameFoodAdmin);
+            priceFood = itemView.findViewById(R.id.txtPriceFoodAdmin);
+            imageFood = itemView.findViewById(R.id.imgFoodAdmin);
         }
     }
 }

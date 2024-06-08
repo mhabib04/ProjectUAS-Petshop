@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.model.select.selectAccessories.AccessoriesDataSelect;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AdapterListAccessoriesAdmin extends RecyclerView.Adapter<AdapterListAccessoriesAdmin.ViewHolder> {
     private Context context;
@@ -41,11 +43,14 @@ public class AdapterListAccessoriesAdmin extends RecyclerView.Adapter<AdapterLis
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         AccessoriesDataSelect data = model.get(position);
-        holder.name.setText(data.getName());
-        holder.price.setText(String.valueOf(data.getPrice()));
+        holder.nameAccessories.setText(data.getName());
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        int price = data.getPrice();
+        holder.priceAccessories.setText(formatRupiah.format((double)price));
         byte[] imageBytes = Base64.decode(data.getImage().substring(data.getImage().indexOf(",") + 1), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        holder.imgAccessories.setImageBitmap(bitmap);
+        holder.imageAccessories.setImageBitmap(bitmap);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,14 +76,14 @@ public class AdapterListAccessoriesAdmin extends RecyclerView.Adapter<AdapterLis
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name, price;
-        ImageView imgAccessories;
+        TextView nameAccessories, priceAccessories;
+        ImageView imageAccessories;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.txtNameAccessories);
-            price = itemView.findViewById(R.id.txtPriceAccessories);
-            imgAccessories = itemView.findViewById(R.id.imgAccessories);
+            nameAccessories = itemView.findViewById(R.id.txtNameAccessoriesAdmin);
+            priceAccessories = itemView.findViewById(R.id.txtPriceAccessoriesAdmin);
+            imageAccessories = itemView.findViewById(R.id.imgAccessoriesAdmin);
         }
     }
 }

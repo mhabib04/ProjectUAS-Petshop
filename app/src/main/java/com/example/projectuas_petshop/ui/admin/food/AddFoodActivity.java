@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityAddFoodBinding;
@@ -29,7 +30,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddFoodActivity extends AppCompatActivity {
-
     private ActivityAddFoodBinding binding;
     ApiInterface apiInterface;
     private Uri imageUri;
@@ -39,28 +39,24 @@ public class AddFoodActivity extends AppCompatActivity {
         binding = ActivityAddFoodBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
-        });
+        setSupportActionBar(binding.toolbarAddFoodAdmin);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        binding.btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String selectType = binding.autoCompleteText.getText().toString().trim();
-                String name = binding.etName.getText().toString().trim();
-                String priceString = binding.etPrice.getText().toString().trim();
+        binding.btnSelectImageFood.setOnClickListener(v -> openFileChooser());
 
-                if (binding.autoCompleteText.getText().toString().isEmpty() || name.isEmpty() || priceString.isEmpty()) {
-                    Toast.makeText(AddFoodActivity.this, "Selesaikan pengisian", Toast.LENGTH_SHORT).show();
-                } else if (imageUri == null) {
-                    Toast.makeText(AddFoodActivity.this, "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
-                } else {
-                    int price = Integer.parseInt(priceString);
-                    addFood(selectType, name, price, imageUri);
-                }
+        binding.btnAddFood.setOnClickListener(v -> {
+            String selectType = binding.optionTypeFood.getText().toString().trim();
+            String name = binding.etNameFood.getText().toString().trim();
+            String priceString = binding.etPriceFood.getText().toString().trim();
+
+            if (binding.optionTypeFood.getText().toString().isEmpty() || name.isEmpty() || priceString.isEmpty()) {
+                Toast.makeText(AddFoodActivity.this, getString(R.string.please_fill_in_all_field_completely), Toast.LENGTH_SHORT).show();
+            } else if (imageUri == null) {
+                Toast.makeText(AddFoodActivity.this, getString(R.string.select_image_first), Toast.LENGTH_SHORT).show();
+            } else {
+                int price = Integer.parseInt(priceString);
+                addFood(selectType, name, price, imageUri);
             }
         });
 
@@ -79,7 +75,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
         if (requestCode==1 && data!=null){
             imageUri = data.getData();
-            binding.imgUploadFood.setImageURI(imageUri);
+            binding.imgSelectImageFood.setImageURI(imageUri);
         }
     }
 
@@ -97,8 +93,8 @@ public class AddFoodActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<Insert> call, @NonNull Response<Insert> response) {
                 if(response.body() != null && response.isSuccessful() && response.body().isStatus()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddFoodActivity.this);
-                    builder.setTitle("Sukses");
-                    builder.setMessage("Data Berhasil Disimpan");
+                    builder.setTitle(getString(R.string.success));
+                    builder.setMessage(getString(R.string.data_added_successfully));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -108,7 +104,7 @@ public class AddFoodActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 } else {
-                    Toast.makeText(AddFoodActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddFoodActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -123,5 +119,11 @@ public class AddFoodActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

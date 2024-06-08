@@ -16,7 +16,6 @@ import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityRegisterBinding;
 import com.example.projectuas_petshop.model.register.Register;
 import com.example.projectuas_petshop.ui.admin.FileUtils;
-import com.example.projectuas_petshop.ui.admin.food.AddFoodActivity;
 
 import java.io.File;
 
@@ -39,11 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.btnSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
+        binding.btnSelectImage.setOnClickListener(v -> {
+            openFileChooser();
         });
 
         binding.btnRegister.setOnClickListener(v -> {
@@ -52,10 +48,10 @@ public class RegisterActivity extends AppCompatActivity {
             nameRegister = binding.etNameRegister.getText().toString().trim();
             if(usernameRegister.isEmpty() || nameRegister.isEmpty() || passwordRegister.isEmpty()){
                 Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_in_all_field_completely), Toast.LENGTH_SHORT).show();
-            } else if (imageUri == null || binding.imgUploadImage.getDrawable() == null) {
-                Toast.makeText(RegisterActivity.this, "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
+            } else if (imageUri == null || binding.imgSelectImage.getDrawable() == null) {
+                Toast.makeText(RegisterActivity.this, "Select Image First", Toast.LENGTH_SHORT).show();
             } else {
-                register(usernameRegister, passwordRegister, nameRegister, "user", imageUri);
+                register(usernameRegister, passwordRegister, nameRegister, imageUri);
             }
         });
 
@@ -79,20 +75,20 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (requestCode==1 && data!=null){
             imageUri = data.getData();
-            binding.imgUploadImage.setImageURI(imageUri);
+            binding.imgSelectImage.setImageURI(imageUri);
         }
     }
 
-    private void register(String username, String password, String name, String role, Uri imageUri) {
+    private void register(String username, String password, String name, Uri imageUri) {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         File file = new File(FileUtils.getPath(this, imageUri));
         RequestBody usernameBody = RequestBody.create(username, MediaType.parse("text/plain"));
         RequestBody nameBody = RequestBody.create(name, MediaType.parse("text/plain"));
         RequestBody passwordBody = RequestBody.create(password, MediaType.parse("text/plain"));
-        RequestBody roleBody = RequestBody.create(role, MediaType.parse("text/plain"));
+        RequestBody roleBody = RequestBody.create("user", MediaType.parse("text/plain"));
         RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/jpeg"));
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-        Call<Register> registerCall = apiInterface.registerResponse(usernameBody,passwordBody, nameBody, roleBody, body);
+        MultipartBody.Part imageBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        Call<Register> registerCall = apiInterface.registerResponse(usernameBody,passwordBody, nameBody, roleBody, imageBody);
         registerCall.enqueue(new Callback<Register>() {
             @Override
             public void onResponse(@NonNull Call<Register> call, @NonNull Response<Register> response) {

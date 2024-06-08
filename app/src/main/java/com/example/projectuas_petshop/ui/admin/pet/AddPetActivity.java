@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityAddPetBinding;
@@ -29,7 +30,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddPetActivity extends AppCompatActivity {
-
     private ActivityAddPetBinding binding;
     ApiInterface apiInterface;
     private Uri imageUri;
@@ -40,30 +40,26 @@ public class AddPetActivity extends AppCompatActivity {
         binding = ActivityAddPetBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
-        });
+        setSupportActionBar(binding.toolbarAddPetAdmin);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        binding.btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String selectType = binding.autoCompleteText.getText().toString().trim();
-                String breed = binding.etBreed.getText().toString().trim();
-                String priceString = binding.etPrice.getText().toString().trim();
-                String ageString = binding.etAge.getText().toString().trim();
+        binding.btnSelectImagePet.setOnClickListener(v -> openFileChooser());
 
-                if (binding.autoCompleteText.getText().toString().isEmpty() || breed.isEmpty() || priceString.isEmpty() || ageString.isEmpty()) {
-                    Toast.makeText(AddPetActivity.this, "Selesaikan pengisian", Toast.LENGTH_SHORT).show();
-                } else if (imageUri == null) {
-                    Toast.makeText(AddPetActivity.this, "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
-                } else {
-                    int price = Integer.parseInt(priceString);
-                    int age = Integer.parseInt(ageString);
-                    addPet(selectType, breed, price, age, imageUri);
-                }
+        binding.btnAddPet.setOnClickListener(v -> {
+            String selectType = binding.optionTypePet.getText().toString().trim();
+            String breed = binding.etBreedPet.getText().toString().trim();
+            String priceString = binding.etPricePet.getText().toString().trim();
+            String ageString = binding.etAgePet.getText().toString().trim();
+
+            if (binding.optionTypePet.getText().toString().isEmpty() || breed.isEmpty() || priceString.isEmpty() || ageString.isEmpty()) {
+                Toast.makeText(AddPetActivity.this, getString(R.string.please_fill_in_all_field_completely), Toast.LENGTH_SHORT).show();
+            } else if (imageUri == null) {
+                Toast.makeText(AddPetActivity.this, getString(R.string.select_image_first), Toast.LENGTH_SHORT).show();
+            } else {
+                int price = Integer.parseInt(priceString);
+                int age = Integer.parseInt(ageString);
+                addPet(selectType, breed, price, age, imageUri);
             }
         });
 
@@ -82,7 +78,7 @@ public class AddPetActivity extends AppCompatActivity {
 
         if (requestCode==1 && data!=null){
             imageUri = data.getData();
-            binding.imgUploadPet.setImageURI(imageUri);
+            binding.imgSelectImagePet.setImageURI(imageUri);
         }
     }
 
@@ -94,15 +90,15 @@ public class AddPetActivity extends AppCompatActivity {
         RequestBody priceBody = RequestBody.create(String.valueOf(price), MediaType.parse("text/plain"));
         RequestBody ageBody = RequestBody.create(String.valueOf(age), MediaType.parse("text/plain"));
         RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/jpeg"));
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-        Call<Insert> insertPetCall = apiInterface.insertPetResponse(typeBody,breedBody, priceBody, ageBody, body);
+        MultipartBody.Part imageBody = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        Call<Insert> insertPetCall = apiInterface.insertPetResponse(typeBody,breedBody, priceBody, ageBody, imageBody);
         insertPetCall.enqueue(new Callback<Insert>() {
             @Override
             public void onResponse(@NonNull Call<Insert> call, @NonNull Response<Insert> response) {
                 if(response.body() != null && response.isSuccessful() && response.body().isStatus()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddPetActivity.this);
-                    builder.setTitle("Sukses");
-                    builder.setMessage("Data Berhasil Disimpan");
+                    builder.setTitle(getString(R.string.success));
+                    builder.setMessage(getString(R.string.data_added_successfully));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -112,7 +108,7 @@ public class AddPetActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 } else {
-                    Toast.makeText(AddPetActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPetActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -127,5 +123,10 @@ public class AddPetActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         finish();
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

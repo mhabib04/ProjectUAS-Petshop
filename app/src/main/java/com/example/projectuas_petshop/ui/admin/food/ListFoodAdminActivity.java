@@ -22,8 +22,7 @@ import com.example.projectuas_petshop.model.delete.Delete;
 import com.example.projectuas_petshop.model.select.selectFood.FoodSelect;
 import com.example.projectuas_petshop.model.select.selectFood.FoodDataSelect;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
-import com.example.projectuas_petshop.ui.admin.pet.EditPetActivity;
-import com.example.projectuas_petshop.ui.admin.pet.ListPetAdminActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,15 +49,9 @@ public class ListFoodAdminActivity extends AppCompatActivity {
 
         loadData();
 
-        binding.fabFood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAnchorView(R.id.fab)
-//                        .setAction("Action", null).show();
-                Intent intent = new Intent(ListFoodAdminActivity.this, AddFoodActivity.class);
-                startActivity(intent);
-            }
+        binding.fabFood.setOnClickListener(v -> {
+            Intent intent = new Intent(ListFoodAdminActivity.this, AddFoodActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -82,7 +75,7 @@ public class ListFoodAdminActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ListFoodAdminActivity.this, "Data kosong", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.empty_data), Snackbar.LENGTH_SHORT).show();
                 }
             }
 
@@ -92,7 +85,6 @@ public class ListFoodAdminActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void showPopupMenu(View view, int position, int id_food) {
         PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
@@ -105,14 +97,15 @@ public class ListFoodAdminActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.hapus) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListFoodAdminActivity.this);
-                    builder.setTitle("Apakah Ingin Menghapus Data?");
-                    builder.setNegativeButton("Ya", new DialogInterface.OnClickListener() {
+                    builder.setTitle(getString(R.string.delete_data));
+                    builder.setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deleteFood(id_food);
+                            loadData();
                         }
                     });
-                    builder.setPositiveButton("Tidak", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -139,8 +132,8 @@ public class ListFoodAdminActivity extends AppCompatActivity {
             public void onResponse(Call<Delete> call, Response<Delete> response) {
                 if (response.isSuccessful()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListFoodAdminActivity.this);
-                    builder.setTitle("Sukses");
-                    builder.setMessage("Data Berhasil Dihapus");
+                    builder.setTitle(getString(R.string.success));
+                    builder.setMessage(getString(R.string.data_deleted_successfully));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -150,7 +143,7 @@ public class ListFoodAdminActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();loadData();
                 } else {
-                    Toast.makeText(ListFoodAdminActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListFoodAdminActivity.this, getString(R.string.failed_to_delete_data), Toast.LENGTH_SHORT).show();
                 }
             }
 
