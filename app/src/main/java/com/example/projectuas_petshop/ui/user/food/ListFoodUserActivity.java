@@ -26,6 +26,7 @@ import com.example.projectuas_petshop.model.select.selectFoodByType.FoodSelectBy
 import com.example.projectuas_petshop.model.select.selectPetByType.PetDataSelectByType;
 import com.example.projectuas_petshop.model.select.selectPetByType.PetSelectByType;
 import com.example.projectuas_petshop.ui.user.pet.ListPetUserActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,7 @@ public class ListFoodUserActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ListFoodUserActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.empty_data), Snackbar.LENGTH_SHORT).show();
                 }
             }
 

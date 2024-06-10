@@ -22,6 +22,7 @@ import com.example.projectuas_petshop.model.delete.Delete;
 import com.example.projectuas_petshop.model.select.selectAccessories.AccessoriesDataSelect;
 import com.example.projectuas_petshop.model.select.selectAccessories.AccessoriesSelect;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,7 @@ public class ListAccessoriesAdminActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ListAccessoriesAdminActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.empty_data), Snackbar.LENGTH_SHORT).show();
                 }
             }
 
