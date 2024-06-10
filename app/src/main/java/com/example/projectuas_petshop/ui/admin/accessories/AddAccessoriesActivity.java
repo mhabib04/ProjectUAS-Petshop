@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,7 +16,7 @@ import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityAddAccessoriesBinding;
 import com.example.projectuas_petshop.model.insert.Insert;
-import com.example.projectuas_petshop.ui.admin.FileUtils;
+import com.example.projectuas_petshop.model.FileUtils;
 
 import java.io.File;
 

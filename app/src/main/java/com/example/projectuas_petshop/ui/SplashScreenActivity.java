@@ -8,6 +8,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectuas_petshop.R;
+import com.example.projectuas_petshop.model.SessionManager;
 import com.example.projectuas_petshop.ui.admin.AdminActivity;
 import com.example.projectuas_petshop.ui.user.UserActivity;
 
@@ -40,17 +41,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else if(!sessionManager.isLoggedIn()){
-                    moveToLogin();
+                    Intent intent = new Intent(SplashScreenActivity.this, StartActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
+                    finish();
                 }
             }
         }, SPLASH_SCREEN_DELAY);
 
-    }
-
-    private void moveToLogin() {
-        Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-        finish();
     }
 }

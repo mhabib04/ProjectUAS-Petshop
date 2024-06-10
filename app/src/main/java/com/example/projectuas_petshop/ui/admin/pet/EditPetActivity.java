@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -23,7 +24,7 @@ import com.example.projectuas_petshop.databinding.ActivityEditPetBinding;
 import com.example.projectuas_petshop.model.select.getPet.GetPet;
 import com.example.projectuas_petshop.model.select.getPet.GetPetData;
 import com.example.projectuas_petshop.model.update.Update;
-import com.example.projectuas_petshop.ui.admin.FileUtils;
+import com.example.projectuas_petshop.model.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,10 +73,10 @@ public class EditPetActivity extends AppCompatActivity {
 
                 if (imageChanged) {
                     updatePet(id_pet, selectType, breed, price, age, imageUri);
-                } else if (binding.imgUploadPet.getDrawable() != null) {
-                    binding.imgUploadPet.setDrawingCacheEnabled(true);
-                    binding.imgUploadPet.buildDrawingCache(true);
-                    Bitmap bitmap = binding.imgUploadPet.getDrawingCache();
+                } else if (binding.imgSelectImagePet.getDrawable() != null) {
+                    binding.imgSelectImagePet.setDrawingCacheEnabled(true);
+                    binding.imgSelectImagePet.buildDrawingCache(true);
+                    Bitmap bitmap = binding.imgSelectImagePet.getDrawingCache();
 
                     File file = new File(getCacheDir(), "image.png");
                     try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -109,18 +110,20 @@ public class EditPetActivity extends AppCompatActivity {
 
         if (requestCode == 1 && data != null) {
             imageUri = data.getData();
-            binding.imgUploadPet.setImageURI(imageUri);
+            binding.imgSelectImagePet.setImageURI(imageUri);
             imageChanged = true;
         }
     }
 
     public void getData(int id_pet) {
+        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<GetPet> getPetCall = apiInterface.getPet(id_pet);
         getPetCall.enqueue(new Callback<GetPet>() {
             @Override
             @SuppressLint({"SetTextI18n", "ResourceType"})
             public void onResponse(Call<GetPet> call, Response<GetPet> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     GetPet getPet = response.body();
                     List<GetPetData> data = getPet.getData();
@@ -128,7 +131,7 @@ public class EditPetActivity extends AppCompatActivity {
                     binding.etBreedPet.setText(data.get(0).getBreed());
                     byte[] imageBytes = Base64.decode(data.get(0).getImage().substring(data.get(0).getImage().indexOf(",") + 1), Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    binding.imgUploadPet.setImageBitmap(bitmap);
+                    binding.imgSelectImagePet.setImageBitmap(bitmap);
                     String price = String.valueOf(data.get(0).getPrice());
                     String age = String.valueOf(data.get(0).getAge());
                     binding.etPricePet.setText(price);
@@ -140,6 +143,7 @@ public class EditPetActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetPet> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(EditPetActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -23,7 +24,7 @@ import com.example.projectuas_petshop.databinding.ActivityEditFoodBinding;
 import com.example.projectuas_petshop.model.select.getFood.GetFood;
 import com.example.projectuas_petshop.model.select.getFood.GetFoodData;
 import com.example.projectuas_petshop.model.update.Update;
-import com.example.projectuas_petshop.ui.admin.FileUtils;
+import com.example.projectuas_petshop.model.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -70,10 +71,10 @@ public class EditFoodActivity extends AppCompatActivity {
 
                 if (imageChanged) {
                     updateFood(id_food, selectType, name, price, imageUri);
-                } else if (binding.imgUploadFood.getDrawable() != null) {
-                    binding.imgUploadFood.setDrawingCacheEnabled(true);
-                    binding.imgUploadFood.buildDrawingCache(true);
-                    Bitmap bitmap = binding.imgUploadFood.getDrawingCache();
+                } else if (binding.imgSelectImageFood.getDrawable() != null) {
+                    binding.imgSelectImageFood.setDrawingCacheEnabled(true);
+                    binding.imgSelectImageFood.buildDrawingCache(true);
+                    Bitmap bitmap = binding.imgSelectImageFood.getDrawingCache();
 
                     File file = new File(getCacheDir(), "image.png");
                     try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -107,18 +108,20 @@ public class EditFoodActivity extends AppCompatActivity {
 
         if (requestCode == 1 && data != null) {
             imageUri = data.getData();
-            binding.imgUploadFood.setImageURI(imageUri);
+            binding.imgSelectImageFood.setImageURI(imageUri);
             imageChanged = true;
         }
     }
 
     public void getData(int id_food) {
+        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<GetFood> getFoodCall = apiInterface.getFood(id_food);
         getFoodCall.enqueue(new Callback<GetFood>() {
             @Override
             @SuppressLint({"SetTextI18n", "ResourceType"})
             public void onResponse(Call<GetFood> call, Response<GetFood> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     GetFood getFood = response.body();
                     List<GetFoodData> data = getFood.getData();
@@ -126,7 +129,7 @@ public class EditFoodActivity extends AppCompatActivity {
                     binding.etNameFood.setText(data.get(0).getName());
                     byte[] imageBytes = Base64.decode(data.get(0).getImage().substring(data.get(0).getImage().indexOf(",") + 1), Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    binding.imgUploadFood.setImageBitmap(bitmap);
+                    binding.imgSelectImageFood.setImageBitmap(bitmap);
                     String price = String.valueOf(data.get(0).getPrice());
                     binding.etPriceFood.setText(price);
                 } else {
@@ -136,6 +139,7 @@ public class EditFoodActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetFood> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(EditFoodActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

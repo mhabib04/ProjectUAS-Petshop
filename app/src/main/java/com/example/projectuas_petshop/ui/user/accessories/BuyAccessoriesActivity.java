@@ -1,6 +1,7 @@
 package com.example.projectuas_petshop.ui.user.accessories;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,11 +10,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityBuyAccessoriesBinding;
 import com.example.projectuas_petshop.model.select.getAccessories.GetAccessories;
 import com.example.projectuas_petshop.model.select.getAccessories.GetAccessoriesData;
+import com.example.projectuas_petshop.ui.user.SuccesBuyActivity;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -37,8 +40,11 @@ public class BuyAccessoriesActivity extends AppCompatActivity {
 
         getData(id_accessories);
 
-        binding.buttonBuy.setOnClickListener(v -> {
-            Toast.makeText(BuyAccessoriesActivity.this, "Berhasil", Toast.LENGTH_SHORT).show();
+        binding.buttonBuy.setOnClickListener( v-> {
+            Intent intent = new Intent(this, SuccesBuyActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -52,16 +58,16 @@ public class BuyAccessoriesActivity extends AppCompatActivity {
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     GetAccessories getAccessories = response.body();
                     List<GetAccessoriesData> data = getAccessories.getData();
-                    binding.txtNameAccessories.setText(data.get(0).getName());
+                    binding.txtNameAccessoriesBuy.setText(data.get(0).getName());
                     byte[] imageBytes = Base64.decode(data.get(0).getImage().substring(data.get(0).getImage().indexOf(",") + 1), Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    binding.imgAccessories.setImageBitmap(bitmap);
+                    binding.imgAccessoriesBuy.setImageBitmap(bitmap);
                     Locale localeID = new Locale("in", "ID");
                     NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
                     int price = data.get(0).getPrice();
-                    binding.txtPriceAccessories.setText(": " + formatRupiah.format((double)price));
+                    binding.txtPriceAccessoriesBuy.setText(formatRupiah.format((double)price));
                 } else {
-                    Toast.makeText(BuyAccessoriesActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BuyAccessoriesActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
                 }
             }
 

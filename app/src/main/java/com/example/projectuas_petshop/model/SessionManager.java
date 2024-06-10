@@ -1,4 +1,4 @@
-package com.example.projectuas_petshop.ui;
+package com.example.projectuas_petshop.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -44,7 +44,21 @@ public class AdapterListFoodAdmin extends RecyclerView.Adapter<AdapterListFoodAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         FoodDataSelect data = model.get(position);
-        holder.typeFood.setText(data.getType());
+        String type = data.getType();
+        switch (type) {
+            case "Cat":
+                holder.typeFood.setText(context.getString(R.string.cat));
+                break;
+            case "Dog":
+                holder.typeFood.setText(context.getString(R.string.dog));
+                break;
+            case "Bird":
+                holder.typeFood.setText(context.getString(R.string.bird));
+                break;
+            case "Fish":
+                holder.typeFood.setText(context.getString(R.string.fish));
+                break;
+        }
         holder.nameFood.setText(data.getName());
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);

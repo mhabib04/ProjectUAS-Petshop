@@ -44,7 +44,21 @@ public class AdapterListPetAdmin extends RecyclerView.Adapter<AdapterListPetAdmi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PetDataSelect data = model.get(position);
-        holder.typePet.setText(data.getType());
+        String type = data.getType();
+        switch (type) {
+            case "Cat":
+                holder.typePet.setText(context.getString(R.string.cat));
+                break;
+            case "Dog":
+                holder.typePet.setText(context.getString(R.string.dog));
+                break;
+            case "Bird":
+                holder.typePet.setText(context.getString(R.string.bird));
+                break;
+            case "Fish":
+                holder.typePet.setText(context.getString(R.string.fish));
+                break;
+        }
         holder.breedPet.setText(data.getBreed());
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);

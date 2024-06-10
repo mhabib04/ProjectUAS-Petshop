@@ -1,4 +1,4 @@
-package com.example.projectuas_petshop.ui.admin;
+package com.example.projectuas_petshop.model;
 
 import android.content.ContentUris;
 import android.content.Context;

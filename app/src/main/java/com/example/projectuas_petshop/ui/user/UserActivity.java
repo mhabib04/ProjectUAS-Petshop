@@ -10,9 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.databinding.ActivityUserBinding;
-import com.example.projectuas_petshop.ui.LoginActivity;
-import com.example.projectuas_petshop.ui.SessionManager;
-import com.example.projectuas_petshop.ui.admin.AdminActivity;
+import com.example.projectuas_petshop.model.SessionManager;
 import com.example.projectuas_petshop.ui.user.accessories.ListAccessoriesUserActivity;
 import com.example.projectuas_petshop.ui.user.food.ListFoodUserActivity;
 import com.example.projectuas_petshop.ui.user.pet.ListPetUserActivity;
@@ -40,65 +38,63 @@ public class UserActivity extends AppCompatActivity {
             binding.imgProfile.setImageResource(R.drawable.account);
         }
 
-        binding.btnCats.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListPetUserActivity.class);
+        binding.btnCatPet.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ListPetUserActivity.class);
             intent.putExtra("category", "Cat");
             startActivity(intent);
         });
 
-        binding.btnDogs.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListPetUserActivity.class);
+        binding.btnDogPet.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ListPetUserActivity.class);
             intent.putExtra("category", "Dog");
             startActivity(intent);
         });
 
-        binding.btnBirds.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListPetUserActivity.class);
+        binding.btnBirdPet.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ListPetUserActivity.class);
             intent.putExtra("category", "Bird");
             startActivity(intent);
         });
 
-        binding.btnFishs.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListPetUserActivity.class);
+        binding.btnFishPet.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ListPetUserActivity.class);
             intent.putExtra("category", "Fish");
             startActivity(intent);
         });
 
-        binding.btnFoodCat.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListFoodUserActivity.class);
+        binding.foodCat.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ListFoodUserActivity.class);
             intent.putExtra("category", "Cat");
             startActivity(intent);
         });
 
-        binding.btnFoodDog.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListFoodUserActivity.class);
+        binding.foodDog.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ListFoodUserActivity.class);
             intent.putExtra("category", "Dog");
             startActivity(intent);
         });
 
-        binding.btnFoodBird.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListFoodUserActivity.class);
+        binding.foodBird.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ListFoodUserActivity.class);
             intent.putExtra("category", "Bird");
             startActivity(intent);
         });
 
-        binding.btnFoodFish.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListFoodUserActivity.class);
+        binding.foodFish.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ListFoodUserActivity.class);
             intent.putExtra("category", "Fish");
             startActivity(intent);
         });
 
-        binding.accessories.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListAccessoriesUserActivity.class);
+        binding.btnAccessories.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ListAccessoriesUserActivity.class);
             startActivity(intent);
         });
 
         binding.imgProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ProfileUserActivity.class);
+            Intent intent = new Intent(UserActivity.this, ProfileUserActivity.class);
             startActivity(intent);
         });
 
     }
-
-
 }

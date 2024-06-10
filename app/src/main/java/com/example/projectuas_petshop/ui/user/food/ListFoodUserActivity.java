@@ -1,5 +1,6 @@
 package com.example.projectuas_petshop.ui.user.food;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.projectuas_petshop.R;
@@ -38,13 +40,14 @@ public class ListFoodUserActivity extends AppCompatActivity {
     AdapterListFoodUser adapterListFoodUser;
     ApiInterface apiInterface;
     String category;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityListFoodUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.listFoodUser.setLayoutManager(new LinearLayoutManager(this));
+        binding.listFoodUser.setLayoutManager(new GridLayoutManager(this, 2));
 
         setSupportActionBar(binding.toolbarListFoodUser);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -53,13 +56,16 @@ public class ListFoodUserActivity extends AppCompatActivity {
         category = getIntent().getStringExtra("category");
 
         loadData(category);
+        binding.titleListFoodUser.setText(category  + " " + getString(R.string.food));
     }
     public void loadData(String type) {
+        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<FoodSelectByType> call = apiInterface.foodSelectByType(type);
         call.enqueue(new Callback<FoodSelectByType>() {
             @Override
             public void onResponse(Call<FoodSelectByType> call, Response<FoodSelectByType> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     FoodSelectByType foodSelectByType = response.body();
                     List<FoodDataSelectByType> dataList = foodSelectByType.getData();
@@ -75,12 +81,13 @@ public class ListFoodUserActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ListFoodUserActivity.this, "Data kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListFoodUserActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FoodSelectByType> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(ListFoodUserActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

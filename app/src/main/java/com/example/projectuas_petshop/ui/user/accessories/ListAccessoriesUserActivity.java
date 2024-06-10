@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityListAccessoriesUserBinding;
@@ -34,21 +36,22 @@ public class ListAccessoriesUserActivity extends AppCompatActivity {
         binding = ActivityListAccessoriesUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.listAccessoriesUser.setLayoutManager(new LinearLayoutManager(this));
+        binding.listAccessoriesUser.setLayoutManager(new GridLayoutManager(this, 2));
 
         setSupportActionBar(binding.toolbarListAccessoriesUser);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
 
         loadData();
     }
     public void loadData() {
+        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<AccessoriesSelect> accessoriesSelectCall = apiInterface.getAccessoriesData();
         accessoriesSelectCall.enqueue(new Callback<AccessoriesSelect>() {
             @Override
             public void onResponse(Call<AccessoriesSelect> call, Response<AccessoriesSelect> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     AccessoriesSelect accessories = response.body();
                     List<AccessoriesDataSelect> dataList = accessories.getData();
@@ -64,12 +67,13 @@ public class ListAccessoriesUserActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ListAccessoriesUserActivity.this, "Data kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListAccessoriesUserActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AccessoriesSelect> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(ListAccessoriesUserActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

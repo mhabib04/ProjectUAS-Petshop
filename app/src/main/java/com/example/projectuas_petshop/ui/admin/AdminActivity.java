@@ -3,7 +3,6 @@ package com.example.projectuas_petshop.ui.admin;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.databinding.ActivityAdminBinding;
 import com.example.projectuas_petshop.ui.LoginActivity;
-import com.example.projectuas_petshop.ui.SessionManager;
+import com.example.projectuas_petshop.model.SessionManager;
 import com.example.projectuas_petshop.ui.admin.accessories.ListAccessoriesAdminActivity;
 import com.example.projectuas_petshop.ui.admin.food.ListFoodAdminActivity;
 import com.example.projectuas_petshop.ui.admin.pet.ListPetAdminActivity;

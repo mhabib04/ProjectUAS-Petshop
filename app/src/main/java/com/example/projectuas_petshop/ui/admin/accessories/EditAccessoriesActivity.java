@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,7 @@ import com.example.projectuas_petshop.databinding.ActivityEditAccessoriesBinding
 import com.example.projectuas_petshop.model.select.getAccessories.GetAccessories;
 import com.example.projectuas_petshop.model.select.getAccessories.GetAccessoriesData;
 import com.example.projectuas_petshop.model.update.Update;
-import com.example.projectuas_petshop.ui.admin.FileUtils;
+import com.example.projectuas_petshop.model.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -70,10 +71,10 @@ public class EditAccessoriesActivity extends AppCompatActivity {
 
                 if (imageChanged) {
                     updateAccessories(id_accessories, name, price, imageUri);
-                } else if (binding.imgUploadAccessories.getDrawable() != null) {
-                    binding.imgUploadAccessories.setDrawingCacheEnabled(true);
-                    binding.imgUploadAccessories.buildDrawingCache(true);
-                    Bitmap bitmap = binding.imgUploadAccessories.getDrawingCache();
+                } else if (binding.imgSelectImageAccessories.getDrawable() != null) {
+                    binding.imgSelectImageAccessories.setDrawingCacheEnabled(true);
+                    binding.imgSelectImageAccessories.buildDrawingCache(true);
+                    Bitmap bitmap = binding.imgSelectImageAccessories.getDrawingCache();
 
                     File file = new File(getCacheDir(), "image.png");
                     try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -104,25 +105,27 @@ public class EditAccessoriesActivity extends AppCompatActivity {
 
         if (requestCode == 1 && data != null) {
             imageUri = data.getData();
-            binding.imgUploadAccessories.setImageURI(imageUri);
+            binding.imgSelectImageAccessories.setImageURI(imageUri);
             imageChanged = true;
         }
     }
 
     public void getData(int id_accessories) {
+        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<GetAccessories> getAccessoriesCall = apiInterface.getAccessories(id_accessories);
         getAccessoriesCall.enqueue(new Callback<GetAccessories>() {
             @Override
             @SuppressLint({"SetTextI18n", "ResourceType"})
             public void onResponse(Call<GetAccessories> call, Response<GetAccessories> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     GetAccessories getAccessories = response.body();
                     List<GetAccessoriesData> data = getAccessories.getData();
                     binding.etNameAccessories.setText(data.get(0).getName());
                     byte[] imageBytes = Base64.decode(data.get(0).getImage().substring(data.get(0).getImage().indexOf(",") + 1), Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    binding.imgUploadAccessories.setImageBitmap(bitmap);
+                    binding.imgSelectImageAccessories.setImageBitmap(bitmap);
                     String price = String.valueOf(data.get(0).getPrice());
                     binding.etPriceAccessories.setText(price);
                 } else {
@@ -132,6 +135,7 @@ public class EditAccessoriesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetAccessories> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(EditAccessoriesActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

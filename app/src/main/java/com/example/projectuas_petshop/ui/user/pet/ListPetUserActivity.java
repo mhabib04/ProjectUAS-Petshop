@@ -1,37 +1,20 @@
 package com.example.projectuas_petshop.ui.user.pet;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.projectuas_petshop.R;
 import com.example.projectuas_petshop.api.ApiClient;
 import com.example.projectuas_petshop.api.ApiInterface;
 import com.example.projectuas_petshop.databinding.ActivityListPetUserBinding;
-import com.example.projectuas_petshop.model.adapter.AdapterListPetAdmin;
 import com.example.projectuas_petshop.model.adapter.AdapterListPetUser;
-import com.example.projectuas_petshop.model.select.selectPet.PetDataSelect;
-import com.example.projectuas_petshop.model.select.selectPet.PetSelect;
 import com.example.projectuas_petshop.model.select.selectPetByType.PetDataSelectByType;
 import com.example.projectuas_petshop.model.select.selectPetByType.PetSelectByType;
-import com.example.projectuas_petshop.ui.admin.food.ListFoodAdminActivity;
-import com.example.projectuas_petshop.ui.admin.pet.ListPetAdminActivity;
-import com.example.projectuas_petshop.ui.user.food.BuyFoodActivity;
-import com.example.projectuas_petshop.ui.user.food.ListFoodUserActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,15 +44,17 @@ public class ListPetUserActivity extends AppCompatActivity {
         category = getIntent().getStringExtra("category");
 
         loadData(category);
-
+        binding.titleListPetUser.setText(category);
     }
 
     public void loadData(String type) {
+        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<PetSelectByType> call = apiInterface.petSelectByType(type);
         call.enqueue(new Callback<PetSelectByType>() {
             @Override
             public void onResponse(Call<PetSelectByType> call, Response<PetSelectByType> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     PetSelectByType petSelectByType = response.body();
                     List<PetDataSelectByType> dataList = petSelectByType.getData();
@@ -85,12 +70,13 @@ public class ListPetUserActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ListPetUserActivity.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListPetUserActivity.this, getString(R.string.empty_data), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PetSelectByType> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(ListPetUserActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

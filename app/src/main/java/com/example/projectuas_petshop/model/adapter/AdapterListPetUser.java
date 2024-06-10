@@ -42,7 +42,22 @@ public class AdapterListPetUser extends RecyclerView.Adapter<AdapterListPetUser.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PetDataSelectByType data = model.get(position);
-        holder.txtPetUser.setText(data.getBreed());
+        String type = data.getType();
+        switch (type) {
+            case "Cat":
+                holder.typePet.setText(context.getString(R.string.cat));
+                break;
+            case "Dog":
+                holder.typePet.setText(context.getString(R.string.dog));
+                break;
+            case "Bird":
+                holder.typePet.setText(context.getString(R.string.bird));
+                break;
+            case "Fish":
+                holder.typePet.setText(context.getString(R.string.fish));
+                break;
+        }
+        holder.breedPet.setText(data.getBreed());
         byte[] imageBytes = Base64.decode(data.getImage().substring(data.getImage().indexOf(",") + 1), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         holder.imgPetUser.setImageBitmap(bitmap);
@@ -71,12 +86,13 @@ public class AdapterListPetUser extends RecyclerView.Adapter<AdapterListPetUser.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtPetUser;
+        TextView typePet, breedPet;
         ImageView imgPetUser;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtPetUser = itemView.findViewById(R.id.txtPetUser);
+            typePet = itemView.findViewById(R.id.txtTypePetUser);
+            breedPet = itemView.findViewById(R.id.txtBreedPetUser);
             imgPetUser = itemView.findViewById(R.id.imgPetUser);
         }
     }

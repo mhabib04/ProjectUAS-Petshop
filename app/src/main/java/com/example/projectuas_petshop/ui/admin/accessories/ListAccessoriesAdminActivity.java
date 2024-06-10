@@ -55,11 +55,13 @@ public class ListAccessoriesAdminActivity extends AppCompatActivity {
     }
 
     public void loadData() {
+        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<AccessoriesSelect> accessoriesSelectCall = apiInterface.getAccessoriesData();
         accessoriesSelectCall.enqueue(new Callback<AccessoriesSelect>() {
             @Override
             public void onResponse(Call<AccessoriesSelect> call, Response<AccessoriesSelect> response) {
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.body() != null && response.isSuccessful() && response.body().isStatus()) {
                     AccessoriesSelect accessories = response.body();
                     List<AccessoriesDataSelect> dataList = accessories.getData();
@@ -79,6 +81,7 @@ public class ListAccessoriesAdminActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AccessoriesSelect> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(ListAccessoriesAdminActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -92,7 +95,7 @@ public class ListAccessoriesAdminActivity extends AppCompatActivity {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.hapus) {
+                if (item.getItemId() == R.id.delete) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListAccessoriesAdminActivity.this);
                     builder.setTitle(getString(R.string.delete_data));
                     builder.setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {

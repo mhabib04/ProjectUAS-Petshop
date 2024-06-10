@@ -53,5 +53,15 @@
     <string name="add_food">Add Food</string>
     <string name="add_accessories">Add Accessories</string>
     <string name="text_buy_pet">Buy Your Favorite Pet In Our Shop and Find a True Friend!</string>
-
+    <string name="pet_categories">Pet Categories</string>
+    <string name="food_categories">Food Categories</string>
+    <string name="your_profile">Your Profile</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="find_your_dream_npet_here">Find Your Dream\nPet Here</string>
+    <string name="continuee">CONTINUE</string>
+    <string name="buy">BUY</string>
+    <string name="buyy">Buy</string>
+    <string name="successful">SUCCESSFUL</string>
+    <string name="your_transaction_will_be_processed_please_wait_for_delivery">Your transaction will be processed, please wait for delivery!</string>
 </resources>

@@ -33,7 +33,7 @@
                 android:text="@string/admin"
                 android:textAlignment="center"
                 android:backgroundTint="#3C8AFF"
-                android:textStyle="bold"
+                android:fontFamily="@font/inter_extra_bold"
                 android:textColor="@color/black"
                 android:background="@drawable/custom_border"
                 android:textSize="50sp"/>
@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="40sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/inter_extra_bold"
                     android:textColor="@color/black"
                     android:textAlignment="center"/>
 
@@ -90,7 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="40sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/inter_extra_bold"
                     android:textColor="@color/black"
                     android:textAlignment="center"/>
 
@@ -118,8 +118,8 @@
                     android:text="@string/accessories"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="40sp"
-                    android:textStyle="bold"
+                    android:textSize="35sp"
+                    android:fontFamily="@font/inter_extra_bold"
                     android:textColor="@color/black"
                     android:textAlignment="center"/>
 
@@ -141,7 +141,7 @@
                 android:backgroundTint="#3C8AFF"
                 android:textColor="@color/black"
                 android:text="@string/logout"
-                android:textStyle="bold"/>
+                android:fontFamily="@font/inter_bold"/>
 
         </LinearLayout>
 
