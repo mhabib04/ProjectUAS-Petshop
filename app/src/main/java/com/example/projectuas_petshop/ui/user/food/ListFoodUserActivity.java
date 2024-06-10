@@ -54,9 +54,16 @@ public class ListFoodUserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         category = getIntent().getStringExtra("category");
-
+        if(category.equals("Cat")){
+            binding.titleListFoodUser.setText(getString(R.string.food)  + " " + getString(R.string.cat));
+        } else if(category.equals("Dog")){
+            binding.titleListFoodUser.setText(getString(R.string.food)  + " " + getString(R.string.dog));
+        } else if(category.equals("Fish")){
+            binding.titleListFoodUser.setText(getString(R.string.food)  + " " + getString(R.string.fish));
+        } else if(category.equals("Bird")){
+            binding.titleListFoodUser.setText(getString(R.string.food)  + " " + getString(R.string.bird));
+        }
         loadData(category);
-        binding.titleListFoodUser.setText(category  + " " + getString(R.string.food));
     }
     public void loadData(String type) {
         binding.progressBar.setVisibility(View.VISIBLE);

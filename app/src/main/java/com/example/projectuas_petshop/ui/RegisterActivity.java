@@ -48,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
             if(usernameRegister.isEmpty() || nameRegister.isEmpty() || passwordRegister.isEmpty()){
                 Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_in_all_field_completely), Toast.LENGTH_SHORT).show();
             } else if (imageUri == null || binding.imgSelectImage.getDrawable() == null) {
-                Toast.makeText(RegisterActivity.this, "Select Image First", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, getString(R.string.select_image_first), Toast.LENGTH_SHORT).show();
             } else {
                 register(usernameRegister, passwordRegister, nameRegister, imageUri);
             }

@@ -42,9 +42,17 @@ public class ListPetUserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         category = getIntent().getStringExtra("category");
+        if(category.equals("Cat")){
+            binding.titleListPetUser.setText(getString(R.string.cat));
+        } else if(category.equals("Dog")){
+            binding.titleListPetUser.setText(getString(R.string.dog));
+        } else if(category.equals("Fish")){
+            binding.titleListPetUser.setText(getString(R.string.fish));
+        } else if(category.equals("Bird")){
+            binding.titleListPetUser.setText(getString(R.string.bird));
+        }
 
         loadData(category);
-        binding.titleListPetUser.setText(category);
     }
 
     public void loadData(String type) {
