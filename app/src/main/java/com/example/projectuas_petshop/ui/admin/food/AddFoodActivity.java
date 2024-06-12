@@ -46,6 +46,15 @@ public class AddFoodActivity extends AppCompatActivity {
 
         binding.btnAddFood.setOnClickListener(v -> {
             String selectType = binding.optionTypeFood.getText().toString().trim();
+            if (selectType.equals(getString(R.string.cat))) {
+                selectType = "Cat";
+            } else if (selectType.equals(getString(R.string.dog))) {
+                selectType = "Dog";
+            } else if (selectType.equals(getString(R.string.bird))) {
+                selectType = "Bird";
+            } else if (selectType.equals(getString(R.string.fish))) {
+                selectType = "Fish";
+            }
             String name = binding.etNameFood.getText().toString().trim();
             String priceString = binding.etPriceFood.getText().toString().trim();
 

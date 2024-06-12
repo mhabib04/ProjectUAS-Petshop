@@ -47,6 +47,15 @@ public class AddPetActivity extends AppCompatActivity {
 
         binding.btnAddPet.setOnClickListener(v -> {
             String selectType = binding.optionTypePet.getText().toString().trim();
+            if (selectType.equals(getString(R.string.cat))) {
+                selectType = "Cat";
+            } else if (selectType.equals(getString(R.string.dog))) {
+                selectType = "Dog";
+            } else if (selectType.equals(getString(R.string.bird))) {
+                selectType = "Bird";
+            } else if (selectType.equals(getString(R.string.fish))) {
+                selectType = "Fish";
+            }
             String breed = binding.etBreedPet.getText().toString().trim();
             String priceString = binding.etPricePet.getText().toString().trim();
             String ageString = binding.etAgePet.getText().toString().trim();
